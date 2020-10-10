@@ -1,0 +1,1447 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Titanic - Joo0</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Joo0"><meta name="msapplication-TileImage" content="/img/fav_joo0.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Joo0"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="Scikit-learn을 이용하여 Kaggle의 Titanic를 분석하는 process"><meta property="og:type" content="blog"><meta property="og:title" content="Titanic"><meta property="og:url" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/"><meta property="og:site_name" content="Joo0"><meta property="og:description" content="Scikit-learn을 이용하여 Kaggle의 Titanic를 분석하는 process"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_13_1.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_15_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_17_1.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_18_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_20_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_22_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_24_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_26_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_28_1.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_29_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_31_0.png"><meta property="og:image" content="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_35_1.png"><meta property="article:published_time" content="2020-10-07T05:00:00.000Z"><meta property="article:modified_time" content="2020-10-10T14:19:42.720Z"><meta property="article:author" content="Kim Jooyoung"><meta property="article:tag" content="ML"><meta property="article:tag" content="scikit-learn"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="output_13_1.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/"},"headline":"Joo0","image":["http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_13_1.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_15_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_17_1.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_18_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_20_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_22_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_24_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_26_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_28_1.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_29_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_31_0.png","http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/output_35_1.png"],"datePublished":"2020-10-07T05:00:00.000Z","dateModified":"2020-10-10T14:19:42.720Z","author":{"@type":"Person","name":"Kim Jooyoung"},"description":"Scikit-learn을 이용하여 Kaggle의 Titanic를 분석하는 process"}</script><link rel="canonical" href="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/"><link rel="icon" href="/img/fav_joo0.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://www.googletagmanager.com/gtag/js?id=UA-179938175-1" async></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'UA-179938175-1');</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Joo0" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-10-07T05:00:00.000Z" title="2020-10-07T05:00:00.000Z">2020-10-07</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-10T14:19:42.720Z" title="2020-10-10T14:19:42.720Z">2020-10-10</time></span><span class="level-item"><a class="link-muted" href="/categories/ML/">ML</a></span><span class="level-item">36 minutes read (About 5444 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Titanic</h1><div class="content"><p>Scikit-learn을 이용하여 Kaggle의 Titanic를 분석하는 process</p>
+<a id="more"></a>
+
+<h3 id="Workflow-stages"><a href="#Workflow-stages" class="headerlink" title="Workflow stages"></a>Workflow stages</h3><ol>
+<li>문제 정의 Question or problem definition.</li>
+<li>데이터 수집 Acquire training and testing data.</li>
+<li>데이터 전처리 Wrangle, prepare, cleanse the data.</li>
+<li>데이터 탐색(컬럼 탐색 분석, 패턴 분석 등) Analyze, identify patterns, and explore the data.</li>
+<li>데이터 모델링 Model, predict and solve the problem.</li>
+<li>결과 생성 및 시각화 Visualize, report, and present the problem solving steps and final solution.</li>
+</ol>
+<h3 id="Workflow-goals"><a href="#Workflow-goals" class="headerlink" title="Workflow goals"></a>Workflow goals</h3><ol>
+<li>데이터 전처리<ol>
+<li>데이터 변형 Converting</li>
+<li>데이터 정합성 확인? Completing</li>
+<li>중요 변수 선택 Correlating</li>
+</ol>
+</li>
+<li>모델 성능 Correcting</li>
+<li>시각화 Charting</li>
+</ol>
+<h3 id="문제정의"><a href="#문제정의" class="headerlink" title="문제정의"></a>문제정의</h3><blockquote>
+<p>Knowing from a training set of samples listing passengers who survived or did not survive the Titanic disaster, can our model determine based on a given test dataset not containing the survival information, if these passengers in the test dataset survived or not.</p>
+</blockquote>
+<pre><code>- training data를 통해 생사여부를 판단할 수 있는 모델을 완성
+- test data를 통해 검증</code></pre>
+<h3 id="데이터"><a href="#데이터" class="headerlink" title="데이터"></a>데이터</h3><h4 id="데이터-수집"><a href="#데이터-수집" class="headerlink" title="데이터 수집"></a>데이터 수집</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> pandas <span class="keyword">as</span> pd</span><br><span class="line"><span class="keyword">import</span> numpy <span class="keyword">as</span> np</span><br><span class="line"><span class="keyword">from</span> matplotlib <span class="keyword">import</span> pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">import</span> re</span><br><span class="line"><span class="keyword">import</span> warnings</span><br><span class="line"><span class="keyword">from</span> statistics <span class="keyword">import</span> mode</span><br><span class="line">warnings.filterwarnings(<span class="string">&#x27;ignore&#x27;</span>)</span><br><span class="line">plt.style.use(<span class="string">&#x27;fivethirtyeight&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">train = pd.read_csv(<span class="string">&quot;data/titanic/train.csv&quot;</span>)</span><br><span class="line">test = pd.read_csv(<span class="string">&quot;data/titanic/test.csv&quot;</span>)</span><br><span class="line">gender_submission = pd.read_csv(<span class="string">&quot;data/titanic/gender_submission.csv&quot;</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="데이터-확인"><a href="#데이터-확인" class="headerlink" title="데이터 확인"></a>데이터 확인</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Name</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>Cabin</th>
+      <th>Embarked</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Braund, Mr. Owen Harris</td>
+      <td>male</td>
+      <td>22.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>A/5 21171</td>
+      <td>7.2500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Cumings, Mrs. John Bradley (Florence Briggs Th...</td>
+      <td>female</td>
+      <td>38.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17599</td>
+      <td>71.2833</td>
+      <td>C85</td>
+      <td>C</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>Heikkinen, Miss. Laina</td>
+      <td>female</td>
+      <td>26.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>STON/O2. 3101282</td>
+      <td>7.9250</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Futrelle, Mrs. Jacques Heath (Lily May Peel)</td>
+      <td>female</td>
+      <td>35.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>113803</td>
+      <td>53.1000</td>
+      <td>C123</td>
+      <td>S</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Allen, Mr. William Henry</td>
+      <td>male</td>
+      <td>35.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>373450</td>
+      <td>8.0500</td>
+      <td>NaN</td>
+      <td>S</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.info()</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 891 entries, 0 to 890
+Data columns (total 12 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   PassengerId  891 non-null    int64  
+ 1   Survived     891 non-null    int64  
+ 2   Pclass       891 non-null    int64  
+ 3   Name         891 non-null    object
+ 4   Sex          891 non-null    object
+ 5   Age          714 non-null    float64
+ 6   SibSp        891 non-null    int64  
+ 7   Parch        891 non-null    int64  
+ 8   Ticket       891 non-null    object
+ 9   Fare         891 non-null    float64
+ 10  Cabin        204 non-null    object
+ 11  Embarked     889 non-null    object
+dtypes: float64(2), int64(5), object(5)
+memory usage: 83.7+ KB</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.describe()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Fare</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>count</th>
+      <td>891.000000</td>
+      <td>891.000000</td>
+      <td>891.000000</td>
+      <td>714.000000</td>
+      <td>891.000000</td>
+      <td>891.000000</td>
+      <td>891.000000</td>
+    </tr>
+    <tr>
+      <th>mean</th>
+      <td>446.000000</td>
+      <td>0.383838</td>
+      <td>2.308642</td>
+      <td>29.699118</td>
+      <td>0.523008</td>
+      <td>0.381594</td>
+      <td>32.204208</td>
+    </tr>
+    <tr>
+      <th>std</th>
+      <td>257.353842</td>
+      <td>0.486592</td>
+      <td>0.836071</td>
+      <td>14.526497</td>
+      <td>1.102743</td>
+      <td>0.806057</td>
+      <td>49.693429</td>
+    </tr>
+    <tr>
+      <th>min</th>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>1.000000</td>
+      <td>0.420000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+    </tr>
+    <tr>
+      <th>25%</th>
+      <td>223.500000</td>
+      <td>0.000000</td>
+      <td>2.000000</td>
+      <td>20.125000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>7.910400</td>
+    </tr>
+    <tr>
+      <th>50%</th>
+      <td>446.000000</td>
+      <td>0.000000</td>
+      <td>3.000000</td>
+      <td>28.000000</td>
+      <td>0.000000</td>
+      <td>0.000000</td>
+      <td>14.454200</td>
+    </tr>
+    <tr>
+      <th>75%</th>
+      <td>668.500000</td>
+      <td>1.000000</td>
+      <td>3.000000</td>
+      <td>38.000000</td>
+      <td>1.000000</td>
+      <td>0.000000</td>
+      <td>31.000000</td>
+    </tr>
+    <tr>
+      <th>max</th>
+      <td>891.000000</td>
+      <td>1.000000</td>
+      <td>3.000000</td>
+      <td>80.000000</td>
+      <td>8.000000</td>
+      <td>6.000000</td>
+      <td>512.329200</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h3 id="데이터-탐색"><a href="#데이터-탐색" class="headerlink" title="데이터 탐색"></a>데이터 탐색</h3><table>
+<thead>
+<tr>
+<th>변수</th>
+<th>정의</th>
+<th>분석 방향</th>
+<th>설명</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>Survived</td>
+<td>생사여부</td>
+<td></td>
+<td>0: No, 1:Yes</td>
+</tr>
+<tr>
+<td>Pclass</td>
+<td>탑승 클래스/등급</td>
+<td>클래스별 생존확률, Pclass, Fare 와의 상관관계</td>
+<td></td>
+</tr>
+<tr>
+<td>Name</td>
+<td>이름</td>
+<td>Mr나 Miss, Sir 같은 단어가 영향을 미칠것인가</td>
+<td></td>
+</tr>
+<tr>
+<td>Sex</td>
+<td>성별</td>
+<td>성별간 생존률 확인</td>
+<td>카테고리변경</td>
+</tr>
+<tr>
+<td>Age</td>
+<td>나이</td>
+<td>어릴수록?</td>
+<td></td>
+</tr>
+<tr>
+<td>SibSp</td>
+<td>자식 숫자</td>
+<td>자식수와 생존 상관관계</td>
+<td></td>
+</tr>
+<tr>
+<td>Parch</td>
+<td>부모 숫자</td>
+<td>부모수와 생존 상관관계</td>
+<td></td>
+</tr>
+<tr>
+<td>Ticket</td>
+<td>티켓 넘버</td>
+<td>Fare와 Corr 높을 듯 / 비용과 생존의 Corr?</td>
+<td></td>
+</tr>
+<tr>
+<td>Fare</td>
+<td>요금</td>
+<td>Ticket과 동일</td>
+<td>카테고리변경</td>
+</tr>
+<tr>
+<td>Cabin</td>
+<td>Cabin 여부 및 번호</td>
+<td></td>
+<td></td>
+</tr>
+<tr>
+<td>Embarked</td>
+<td>탑승 항구</td>
+<td></td>
+<td>C = Cherbourg, Q = Queenstown, S = Southampton</td>
+</tr>
+</tbody></table>
+<h4 id="Sex"><a href="#Sex" class="headerlink" title="Sex"></a>Sex</h4><ul>
+<li>사망자:생존자 약 6:4의 비율</li>
+<li>남성의 경우 여성보다 더 많이 사망</li>
+<li>생존에 중요한 변수로 추정</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>,<span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">sns.countplot(train[<span class="string">&#x27;Survived&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;Number of passenger Survived&#x27;</span>);</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">sns.countplot(x=<span class="string">&quot;Survived&quot;</span>, hue=<span class="string">&quot;Sex&quot;</span>, data=train)</span><br><span class="line">plt.title(<span class="string">&#x27;Number of passenger Survived&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Text(0.5, 1.0, &#39;Number of passenger Survived&#39;)</code></pre>
+<p><img src="output_13_1.png" alt="png"></p>
+<h4 id="Pclass"><a href="#Pclass" class="headerlink" title="Pclass"></a>Pclass</h4><ul>
+<li>탑승 클래스</li>
+<li>금액이 저렴한 3등급 탑승객들의 수가 과반수 이상</li>
+<li>사망자수 또한 3등급에서 많이 나옴</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>,<span class="number">5</span>))</span><br><span class="line">plt.style.use(<span class="string">&#x27;fivethirtyeight&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">sns.countplot(train[<span class="string">&#x27;Pclass&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;Count Plot for PClass&#x27;</span>);</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">sns.countplot(x=<span class="string">&quot;Survived&quot;</span>, hue=<span class="string">&quot;Pclass&quot;</span>, data=train)</span><br><span class="line">plt.title(<span class="string">&#x27;Number of passenger Survived&#x27;</span>);</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_15_0.png" alt="png"></p>
+<h4 id="Age"><a href="#Age" class="headerlink" title="Age"></a>Age</h4><ul>
+<li>탑승자들의 나이 분포는 주로 20~30대에 몰려있음</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>, <span class="number">3</span>))</span><br><span class="line">train[<span class="string">&#x27;Age&#x27;</span>].plot(kind=<span class="string">&#x27;hist&#x27;</span>, bins = <span class="number">80</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;matplotlib.axes._subplots.AxesSubplot at 0x1fb36983630&gt;</code></pre>
+<p><img src="output_17_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># set plot size</span></span><br><span class="line">plt.figure(figsize=(<span class="number">15</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># plot a univariate distribution of Age observations</span></span><br><span class="line">sns.distplot(train.loc[train[<span class="string">&quot;Age&quot;</span>] &gt; <span class="number">0</span>, <span class="string">&#x27;Age&#x27;</span>], kde_kws=&#123;<span class="string">&quot;lw&quot;</span>: <span class="number">3</span>&#125;, bins = <span class="number">80</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># set titles and labels</span></span><br><span class="line">plt.title(<span class="string">&#x27;Distrubution of passengers age&#x27;</span>,fontsize= <span class="number">14</span>)</span><br><span class="line">plt.xlabel(<span class="string">&#x27;Age&#x27;</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Frequency&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean layout</span></span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_18_0.png" alt="png"></p>
+<ul>
+<li>생존자들의 연령 분포가 사망자들의 연령 분포보다 좀 더 낮은 것을 확인</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>, <span class="number">3</span>))</span><br><span class="line"></span><br><span class="line"><span class="comment"># Draw a box plot to show Age distributions with respect to survival status.</span></span><br><span class="line">sns.boxplot(y = <span class="string">&#x27;Survived&#x27;</span>, x = <span class="string">&#x27;Age&#x27;</span>, data = train, palette=[<span class="string">&quot;#3f3e6fd1&quot;</span>, <span class="string">&quot;#85c6a9&quot;</span>], fliersize = <span class="number">0</span>, orient = <span class="string">&#x27;h&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># Add a scatterplot for each category.</span></span><br><span class="line">sns.stripplot(y = <span class="string">&#x27;Survived&#x27;</span>, x = <span class="string">&#x27;Age&#x27;</span>, data = train, linewidth = <span class="number">0.6</span>, palette=[<span class="string">&quot;#3f3e6fd1&quot;</span>, <span class="string">&quot;#85c6a9&quot;</span>], orient = <span class="string">&#x27;h&#x27;</span>)</span><br><span class="line"></span><br><span class="line">plt.yticks( np.arange(<span class="number">2</span>), [<span class="string">&#x27;drowned&#x27;</span>, <span class="string">&#x27;survived&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;Age distribution grouped by surviving status (train data)&#x27;</span>,fontsize= <span class="number">14</span>)</span><br><span class="line">plt.ylabel(<span class="string">&#x27;Passenger status after the tragedy&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_20_0.png" alt="png"></p>
+<h4 id="SibSp"><a href="#SibSp" class="headerlink" title="SibSp"></a>SibSp</h4><ul>
+<li>자녀 수가 많을 수록 생존한 것을 확인할 수 있음</li>
+<li>단, 그 수가 많지는 않음</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>,<span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">sns.countplot(train[<span class="string">&#x27;SibSp&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;Number of siblings/spouses aboard&#x27;</span>);</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">sns.countplot(x=<span class="string">&quot;Survived&quot;</span>, hue=<span class="string">&quot;SibSp&quot;</span>, data=train)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;right&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Number of passenger Survived&#x27;</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean layout</span></span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_22_0.png" alt="png"></p>
+<h4 id="Embarked"><a href="#Embarked" class="headerlink" title="Embarked"></a>Embarked</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>,<span class="number">5</span>))</span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">sns.countplot(train[<span class="string">&#x27;Embarked&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;Number of Port of embarkation&#x27;</span>);</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">sns.countplot(x=<span class="string">&#x27;Survived&#x27;</span>, hue=<span class="string">&#x27;Embarked&#x27;</span>, data=train)</span><br><span class="line">plt.legend(loc=<span class="string">&#x27;right&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Number of passenger Survived&#x27;</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment"># clean layout</span></span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_24_0.png" alt="png"></p>
+<h4 id="Fare-vs-Embarked"><a href="#Fare-vs-Embarked" class="headerlink" title="Fare vs Embarked"></a>Fare vs Embarked</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sns.catplot(x=<span class="string">&quot;Embarked&quot;</span>, y=<span class="string">&quot;Fare&quot;</span>, kind=<span class="string">&quot;violin&quot;</span>, inner=<span class="literal">None</span>, data=train, height = <span class="number">6</span>, order = [<span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="string">&#x27;S&#x27;</span>])</span><br><span class="line">plt.title(<span class="string">&#x27;Distribution of Fare by Embarked&#x27;</span>)</span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_26_0.png" alt="png"></p>
+<h4 id="Fare-vs-Pclass"><a href="#Fare-vs-Pclass" class="headerlink" title="Fare vs Pclass"></a>Fare vs Pclass</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">sns.catplot(x=<span class="string">&quot;Pclass&quot;</span>, y=<span class="string">&quot;Fare&quot;</span>, kind=<span class="string">&quot;swarm&quot;</span>, data=train, height = <span class="number">6</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>&lt;seaborn.axisgrid.FacetGrid at 0x1fb3698dbe0&gt;</code></pre>
+<p><img src="output_28_1.png" alt="png"></p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">sns.catplot(x=<span class="string">&quot;Pclass&quot;</span>, y=<span class="string">&quot;Fare&quot;</span>,  hue = <span class="string">&quot;Survived&quot;</span>, kind=<span class="string">&quot;swarm&quot;</span>, data=train, palette=[<span class="string">&quot;#3f3e6fd1&quot;</span>, <span class="string">&quot;#85c6a9&quot;</span>], height = <span class="number">6</span>)</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_29_0.png" alt="png"></p>
+<h4 id="Correlation-Matrix"><a href="#Correlation-Matrix" class="headerlink" title="Correlation Matrix"></a>Correlation Matrix</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">plt.figure(figsize=(<span class="number">15</span>,<span class="number">5</span>))</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">1</span>)</span><br><span class="line">sns.heatmap(train.corr(), annot=<span class="literal">True</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Corelation Matrix&#x27;</span>);</span><br><span class="line"></span><br><span class="line">plt.subplot(<span class="number">1</span>,<span class="number">2</span>,<span class="number">2</span>)</span><br><span class="line">threshold = <span class="number">0.3</span></span><br><span class="line">corr = train.corr()</span><br><span class="line">sns.heatmap(corr[((corr &gt;= threshold) | (corr &lt;= -threshold)) &amp; (corr != <span class="number">1</span>)], annot=<span class="literal">True</span>, linewidths=<span class="number">.5</span>, fmt= <span class="string">&#x27;.2f&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Configured Corelation Matrix&#x27;</span>);</span><br><span class="line"></span><br><span class="line">plt.tight_layout()</span><br></pre></td></tr></table></figure>
+
+
+<p><img src="output_31_0.png" alt="png"></p>
+<h4 id="데이터-결측치-확인"><a href="#데이터-결측치-확인" class="headerlink" title="데이터 결측치 확인"></a>데이터 결측치 확인</h4><ul>
+<li>Age, Cabin, Embarked 결측치 발견</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.isnull().mean(axis=<span class="number">0</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>PassengerId    0.000000
+Survived       0.000000
+Pclass         0.000000
+Name           0.000000
+Sex            0.000000
+Age            0.198653
+SibSp          0.000000
+Parch          0.000000
+Ticket         0.000000
+Fare           0.000000
+Cabin          0.771044
+Embarked       0.002245
+dtype: float64</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">plt.style.use(<span class="string">&#x27;seaborn&#x27;</span>)</span><br><span class="line">plt.figure(figsize=(<span class="number">10</span>,<span class="number">5</span>))</span><br><span class="line">sns.heatmap(train.isnull(), yticklabels = <span class="literal">False</span>, cmap=<span class="string">&#x27;plasma&#x27;</span>)</span><br><span class="line">plt.title(<span class="string">&#x27;Null Values in Training Set&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<pre><code>Text(0.5, 1.0, &#39;Null Values in Training Set&#39;)</code></pre>
+<p><img src="output_35_1.png" alt="png"></p>
+<ul>
+<li>결측치 채우기<ol>
+<li>Embarked : 최빈값으로 채우기</li>
+<li>Fare: 중앙값으로 채우기</li>
+<li>Cabin: NaN -&gt; U(nknown)</li>
+</ol>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">train.loc[train.Age.isnull(), <span class="string">&#x27;Age&#x27;</span>] = train.groupby(<span class="string">&quot;Pclass&quot;</span>).Age.transform(<span class="string">&#x27;median&#x27;</span>)</span><br><span class="line">test.loc[test.Age.isnull(), <span class="string">&#x27;Age&#x27;</span>] = test.groupby(<span class="string">&quot;Pclass&quot;</span>).Age.transform(<span class="string">&#x27;median&#x27;</span>)</span><br><span class="line">train[<span class="string">&#x27;Embarked&#x27;</span>] = train[<span class="string">&#x27;Embarked&#x27;</span>].fillna(mode(train[<span class="string">&#x27;Embarked&#x27;</span>]))</span><br><span class="line">test[<span class="string">&#x27;Embarked&#x27;</span>] = test[<span class="string">&#x27;Embarked&#x27;</span>].fillna(mode(test[<span class="string">&#x27;Embarked&#x27;</span>]))</span><br><span class="line">train[<span class="string">&#x27;Fare&#x27;</span>]  = train.groupby(<span class="string">&quot;Pclass&quot;</span>)[<span class="string">&#x27;Fare&#x27;</span>].transform(<span class="keyword">lambda</span> x: x.fillna(x.median()))</span><br><span class="line">test[<span class="string">&#x27;Fare&#x27;</span>]  = test.groupby(<span class="string">&quot;Pclass&quot;</span>)[<span class="string">&#x27;Fare&#x27;</span>].transform(<span class="keyword">lambda</span> x: x.fillna(x.median()))</span><br><span class="line">train[<span class="string">&#x27;Cabin&#x27;</span>] = train[<span class="string">&#x27;Cabin&#x27;</span>].fillna(<span class="string">&#x27;U&#x27;</span>)</span><br><span class="line">test[<span class="string">&#x27;Cabin&#x27;</span>] = test[<span class="string">&#x27;Cabin&#x27;</span>].fillna(<span class="string">&#x27;U&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+<h3 id="변수-전처리"><a href="#변수-전처리" class="headerlink" title="변수 전처리"></a>변수 전처리</h3><h4 id="Sex-변환"><a href="#Sex-변환" class="headerlink" title="Sex 변환"></a>Sex 변환</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;Sex&#x27;</span>][train[<span class="string">&#x27;Sex&#x27;</span>] == <span class="string">&#x27;male&#x27;</span>] = <span class="number">0</span></span><br><span class="line">train[<span class="string">&#x27;Sex&#x27;</span>][train[<span class="string">&#x27;Sex&#x27;</span>] == <span class="string">&#x27;female&#x27;</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">test[<span class="string">&#x27;Sex&#x27;</span>][test[<span class="string">&#x27;Sex&#x27;</span>] == <span class="string">&#x27;male&#x27;</span>] = <span class="number">0</span></span><br><span class="line">test[<span class="string">&#x27;Sex&#x27;</span>][test[<span class="string">&#x27;Sex&#x27;</span>] == <span class="string">&#x27;female&#x27;</span>] = <span class="number">1</span></span><br><span class="line"></span><br><span class="line">train[<span class="string">&#x27;Sex&#x27;</span>] = train[<span class="string">&#x27;Sex&#x27;</span>].astype(int)</span><br><span class="line">test[<span class="string">&#x27;Sex&#x27;</span>] = test[<span class="string">&#x27;Sex&#x27;</span>].astype(int)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Embarked-ont-hot-encoding"><a href="#Embarked-ont-hot-encoding" class="headerlink" title="Embarked ont hot encoding"></a>Embarked ont hot encoding</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OneHotEncoder</span><br><span class="line"></span><br><span class="line">encoder = OneHotEncoder()</span><br><span class="line">temp = pd.DataFrame(encoder.fit_transform(train[[<span class="string">&#x27;Embarked&#x27;</span>]]).toarray(), columns=[<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>])</span><br><span class="line">train = train.join(temp)</span><br><span class="line"><span class="comment"># train.drop(columns=&#x27;Embarked&#x27;, inplace=True)</span></span><br><span class="line"></span><br><span class="line">temp = pd.DataFrame(encoder.transform(test[[<span class="string">&#x27;Embarked&#x27;</span>]]).toarray(), columns=[<span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>])</span><br><span class="line">test = test.join(temp)</span><br><span class="line"><span class="comment"># test.drop(columns=&#x27;Embarked&#x27;, inplace=True)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Cabin-등급으로-분류"><a href="#Cabin-등급으로-분류" class="headerlink" title="Cabin 등급으로 분류"></a>Cabin 등급으로 분류</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;Cabin&#x27;</span>] = train[<span class="string">&#x27;Cabin&#x27;</span>].map(<span class="keyword">lambda</span> x:re.compile(<span class="string">&quot;([a-zA-Z])&quot;</span>).search(x).group())</span><br><span class="line">test[<span class="string">&#x27;Cabin&#x27;</span>] = test[<span class="string">&#x27;Cabin&#x27;</span>].map(<span class="keyword">lambda</span> x:re.compile(<span class="string">&quot;([a-zA-Z])&quot;</span>).search(x).group())</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">cabin_category = &#123;<span class="string">&#x27;A&#x27;</span>:<span class="number">1</span>, <span class="string">&#x27;B&#x27;</span>:<span class="number">2</span>, <span class="string">&#x27;C&#x27;</span>:<span class="number">3</span>, <span class="string">&#x27;D&#x27;</span>:<span class="number">4</span>, <span class="string">&#x27;E&#x27;</span>:<span class="number">5</span>, <span class="string">&#x27;F&#x27;</span>:<span class="number">6</span>, <span class="string">&#x27;G&#x27;</span>:<span class="number">7</span>, <span class="string">&#x27;T&#x27;</span>:<span class="number">8</span>, <span class="string">&#x27;U&#x27;</span>:<span class="number">9</span>&#125;</span><br><span class="line">train[<span class="string">&#x27;Cabin&#x27;</span>] = train[<span class="string">&#x27;Cabin&#x27;</span>].map(cabin_category)</span><br><span class="line">test[<span class="string">&#x27;Cabin&#x27;</span>] = test[<span class="string">&#x27;Cabin&#x27;</span>].map(cabin_category)</span><br></pre></td></tr></table></figure>
+
+<h4 id="Name-필요-변수-추출"><a href="#Name-필요-변수-추출" class="headerlink" title="Name 필요 변수 추출"></a>Name 필요 변수 추출</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;Name&#x27;</span>] = train.Name.str.extract(<span class="string">&#x27; ([A-Za-z]+)\.&#x27;</span>, expand = <span class="literal">False</span>)</span><br><span class="line">test[<span class="string">&#x27;Name&#x27;</span>] = test.Name.str.extract(<span class="string">&#x27; ([A-Za-z]+)\.&#x27;</span>, expand = <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">train.rename(columns=&#123;<span class="string">&#x27;Name&#x27;</span> : <span class="string">&#x27;Title&#x27;</span>&#125;, inplace=<span class="literal">True</span>)</span><br><span class="line">train[<span class="string">&#x27;Title&#x27;</span>] = train[<span class="string">&#x27;Title&#x27;</span>].replace([<span class="string">&#x27;Rev&#x27;</span>, <span class="string">&#x27;Dr&#x27;</span>, <span class="string">&#x27;Col&#x27;</span>, <span class="string">&#x27;Ms&#x27;</span>, <span class="string">&#x27;Mlle&#x27;</span>, <span class="string">&#x27;Major&#x27;</span>, <span class="string">&#x27;Countess&#x27;</span>,</span><br><span class="line">                                       <span class="string">&#x27;Capt&#x27;</span>, <span class="string">&#x27;Dona&#x27;</span>, <span class="string">&#x27;Jonkheer&#x27;</span>, <span class="string">&#x27;Lady&#x27;</span>, <span class="string">&#x27;Sir&#x27;</span>, <span class="string">&#x27;Mme&#x27;</span>, <span class="string">&#x27;Don&#x27;</span>], <span class="string">&#x27;Other&#x27;</span>)</span><br><span class="line"></span><br><span class="line">test.rename(columns=&#123;<span class="string">&#x27;Name&#x27;</span> : <span class="string">&#x27;Title&#x27;</span>&#125;, inplace=<span class="literal">True</span>)</span><br><span class="line">test[<span class="string">&#x27;Title&#x27;</span>] = test[<span class="string">&#x27;Title&#x27;</span>].replace([<span class="string">&#x27;Rev&#x27;</span>, <span class="string">&#x27;Dr&#x27;</span>, <span class="string">&#x27;Col&#x27;</span>, <span class="string">&#x27;Ms&#x27;</span>, <span class="string">&#x27;Mlle&#x27;</span>, <span class="string">&#x27;Major&#x27;</span>, <span class="string">&#x27;Countess&#x27;</span>,</span><br><span class="line">                                       <span class="string">&#x27;Capt&#x27;</span>, <span class="string">&#x27;Dona&#x27;</span>, <span class="string">&#x27;Jonkheer&#x27;</span>, <span class="string">&#x27;Lady&#x27;</span>, <span class="string">&#x27;Sir&#x27;</span>, <span class="string">&#x27;Mme&#x27;</span>, <span class="string">&#x27;Don&#x27;</span>], <span class="string">&#x27;Other&#x27;</span>)</span><br><span class="line"></span><br><span class="line">encoder = OneHotEncoder()</span><br><span class="line">temp = pd.DataFrame(encoder.fit_transform(train[[<span class="string">&#x27;Title&#x27;</span>]]).toarray())</span><br><span class="line">train = train.join(temp)</span><br><span class="line"><span class="comment"># train.drop(columns=&#x27;Title&#x27;, inplace=True)</span></span><br><span class="line"></span><br><span class="line">temp = pd.DataFrame(encoder.transform(test[[<span class="string">&#x27;Title&#x27;</span>]]).toarray())</span><br><span class="line">test = test.join(temp)</span><br><span class="line"><span class="comment"># test.drop(columns=&#x27;Title&#x27;, inplace=True)</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="SibSp-Parch-전처리"><a href="#SibSp-Parch-전처리" class="headerlink" title="SibSp / Parch  전처리"></a>SibSp / Parch  전처리</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;familySize&#x27;</span>] = train[<span class="string">&#x27;SibSp&#x27;</span>] + train[<span class="string">&#x27;Parch&#x27;</span>] + <span class="number">1</span></span><br><span class="line">test[<span class="string">&#x27;familySize&#x27;</span>] = test[<span class="string">&#x27;SibSp&#x27;</span>] + test[<span class="string">&#x27;Parch&#x27;</span>] + <span class="number">1</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;isAlone&#x27;</span>] = <span class="number">0</span></span><br><span class="line">test[<span class="string">&#x27;isAlone&#x27;</span>] =  <span class="number">0</span></span><br><span class="line">train.loc[train[<span class="string">&#x27;familySize&#x27;</span>] &gt; <span class="number">1</span>, <span class="string">&#x27;isAlone&#x27;</span>] = <span class="number">0</span></span><br><span class="line">test.loc[test[<span class="string">&#x27;familySize&#x27;</span>] &gt; <span class="number">1</span>, <span class="string">&#x27;isAlone&#x27;</span>] = <span class="number">0</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="Fare-등급"><a href="#Fare-등급" class="headerlink" title="Fare 등급"></a>Fare 등급</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;FareBin&#x27;</span>] = pd.qcut(train[<span class="string">&#x27;Fare&#x27;</span>], <span class="number">4</span>, duplicates=<span class="string">&#x27;drop&#x27;</span>, labels=<span class="literal">False</span>)</span><br><span class="line">test[<span class="string">&#x27;FareBin&#x27;</span>] = pd.qcut(test[<span class="string">&#x27;Fare&#x27;</span>], <span class="number">4</span>, duplicates=<span class="string">&#x27;drop&#x27;</span>, labels=<span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="나이-등급"><a href="#나이-등급" class="headerlink" title="나이 등급"></a>나이 등급</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">train[<span class="string">&#x27;AgeBin&#x27;</span>] = pd.cut(train[<span class="string">&#x27;Age&#x27;</span>], <span class="number">4</span>, duplicates=<span class="string">&#x27;drop&#x27;</span>, labels = <span class="literal">False</span>)</span><br><span class="line">test[<span class="string">&#x27;AgeBin&#x27;</span>] = pd.cut(test[<span class="string">&#x27;Age&#x27;</span>], <span class="number">4</span>, duplicates=<span class="string">&#x27;drop&#x27;</span>, labels = <span class="literal">False</span>)</span><br></pre></td></tr></table></figure>
+
+<h4 id="PCA"><a href="#PCA" class="headerlink" title="PCA"></a>PCA</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.info()</span><br></pre></td></tr></table></figure>
+
+<pre><code>&lt;class &#39;pandas.core.frame.DataFrame&#39;&gt;
+RangeIndex: 891 entries, 0 to 890
+Data columns (total 24 columns):
+ #   Column       Non-Null Count  Dtype  
+---  ------       --------------  -----  
+ 0   PassengerId  891 non-null    int64  
+ 1   Survived     891 non-null    int64  
+ 2   Pclass       891 non-null    int64  
+ 3   Title        891 non-null    object
+ 4   Sex          891 non-null    object
+ 5   Age          891 non-null    float64
+ 6   SibSp        891 non-null    int64  
+ 7   Parch        891 non-null    int64  
+ 8   Ticket       891 non-null    object
+ 9   Fare         891 non-null    float64
+ 10  Cabin        891 non-null    int64  
+ 11  Embarked     891 non-null    object
+ 12  S            891 non-null    float64
+ 13  C            891 non-null    float64
+ 14  Q            891 non-null    float64
+ 15  0            891 non-null    float64
+ 16  1            891 non-null    float64
+ 17  2            891 non-null    float64
+ 18  3            891 non-null    float64
+ 19  4            891 non-null    float64
+ 20  familySize   891 non-null    int64  
+ 21  isAlone      891 non-null    int64  
+ 22  FareBin      891 non-null    int64  
+ 23  AgeBin       891 non-null    int64  
+dtypes: float64(10), int64(10), object(4)
+memory usage: 167.2+ KB</code></pre>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># from sklearn.preprocessing import StandardScaler</span></span><br><span class="line"><span class="comment"># from sklearn.decomposition import PCA</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># columns = train.drop(columns=[&quot;PassengerId&quot;,&quot;Survived&quot;,&#x27;Title&#x27;,&#x27;Ticket&#x27;,&#x27;Cabin&#x27;,&#x27;Embarked&#x27;]).columns</span></span><br><span class="line"><span class="comment"># X_train = StandardScaler().fit_transform(train.drop(columns=[&quot;PassengerId&quot;,&quot;Survived&quot;,&#x27;Title&#x27;,&#x27;Ticket&#x27;,&#x27;Cabin&#x27;,&#x27;Embarked&#x27;]))</span></span><br><span class="line"><span class="comment"># new_df = pd.DataFrame(X_train, columns=columns)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pca = PCA(n_components = 2)</span></span><br><span class="line"><span class="comment"># df_pca = pca.fit_transform(new_df)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># plt.figure(figsize =(8, 6))</span></span><br><span class="line"><span class="comment"># plt.scatter(df_pca[:, 0], df_pca[:, 1], c = train[&#x27;Survived&#x27;], cmap =&#x27;plasma&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># plt.xlabel(&#x27;First Principal Component&#x27;)</span></span><br><span class="line"><span class="comment"># plt.ylabel(&#x27;Second Principal Component&#x27;);</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># plt.tight_layout()</span></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># fig = plt.figure()</span></span><br><span class="line"><span class="comment"># ax = fig.gca(projection = &#x27;3d&#x27;)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># pca = PCA(n_components = 3)</span></span><br><span class="line"><span class="comment"># df_pca = pca.fit_transform(new_df)</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># ax.scatter(df_pca[:, 0], df_pca[:, 1], df_pca[:, 2], c = target, cmap =&#x27;plasma&#x27;)</span></span><br><span class="line"><span class="comment"># plt.tight_layout()</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="최종-데이터"><a href="#최종-데이터" class="headerlink" title="최종 데이터"></a>최종 데이터</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">train.head()</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>PassengerId</th>
+      <th>Survived</th>
+      <th>Pclass</th>
+      <th>Title</th>
+      <th>Sex</th>
+      <th>Age</th>
+      <th>SibSp</th>
+      <th>Parch</th>
+      <th>Ticket</th>
+      <th>Fare</th>
+      <th>...</th>
+      <th>Q</th>
+      <th>0</th>
+      <th>1</th>
+      <th>2</th>
+      <th>3</th>
+      <th>4</th>
+      <th>familySize</th>
+      <th>isAlone</th>
+      <th>FareBin</th>
+      <th>AgeBin</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>1</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Mr</td>
+      <td>0</td>
+      <td>22.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>A/5 21171</td>
+      <td>7.2500</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>0</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>2</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Mrs</td>
+      <td>1</td>
+      <td>38.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>PC 17599</td>
+      <td>71.2833</td>
+      <td>...</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>3</td>
+      <td>1</td>
+      <td>3</td>
+      <td>Miss</td>
+      <td>1</td>
+      <td>26.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>STON/O2. 3101282</td>
+      <td>7.9250</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>4</td>
+      <td>1</td>
+      <td>1</td>
+      <td>Mrs</td>
+      <td>1</td>
+      <td>35.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>113803</td>
+      <td>53.1000</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>2</td>
+      <td>0</td>
+      <td>3</td>
+      <td>1</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>5</td>
+      <td>0</td>
+      <td>3</td>
+      <td>Mr</td>
+      <td>0</td>
+      <td>35.0</td>
+      <td>0</td>
+      <td>0</td>
+      <td>373450</td>
+      <td>8.0500</td>
+      <td>...</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1.0</td>
+      <td>0.0</td>
+      <td>0.0</td>
+      <td>1</td>
+      <td>0</td>
+      <td>1</td>
+      <td>1</td>
+    </tr>
+  </tbody>
+</table>
+<p>5 rows × 24 columns</p>
+</div>
+
+
+
+<h3 id="모델링"><a href="#모델링" class="headerlink" title="모델링"></a>모델링</h3><ul>
+<li>테스트 파이프라인</li>
+</ul>
+<ol>
+<li>모델 클래스 선언</li>
+<li>cross validation 세팅</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Common Model Algorithms</span></span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> svm, tree, linear_model, neighbors, naive_bayes, ensemble, discriminant_analysis, gaussian_process</span><br><span class="line"><span class="keyword">from</span> xgboost <span class="keyword">import</span> XGBClassifier</span><br><span class="line"></span><br><span class="line"><span class="comment">#Common Model Helpers</span></span><br><span class="line"><span class="keyword">from</span> sklearn.preprocessing <span class="keyword">import</span> OneHotEncoder, LabelEncoder</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> feature_selection</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> model_selection</span><br><span class="line"><span class="keyword">from</span> sklearn <span class="keyword">import</span> metrics</span><br><span class="line"></span><br><span class="line"><span class="comment">#Visualization</span></span><br><span class="line"><span class="keyword">import</span> matplotlib <span class="keyword">as</span> mpl</span><br><span class="line"><span class="keyword">import</span> matplotlib.pyplot <span class="keyword">as</span> plt</span><br><span class="line"><span class="keyword">import</span> matplotlib.pylab <span class="keyword">as</span> pylab</span><br><span class="line"><span class="keyword">import</span> seaborn <span class="keyword">as</span> sns</span><br><span class="line"><span class="keyword">from</span> pandas.plotting <span class="keyword">import</span> scatter_matrix</span><br><span class="line"></span><br><span class="line"><span class="comment">#Configure Visualization Defaults</span></span><br><span class="line"><span class="comment">#%matplotlib inline = show plots in Jupyter Notebook browser</span></span><br><span class="line">%matplotlib inline</span><br><span class="line">mpl.style.use(<span class="string">&#x27;ggplot&#x27;</span>)</span><br><span class="line">sns.set_style(<span class="string">&#x27;white&#x27;</span>)</span><br><span class="line">pylab.rcParams[<span class="string">&#x27;figure.figsize&#x27;</span>] = <span class="number">12</span>,<span class="number">8</span></span><br></pre></td></tr></table></figure>
+
+<h4 id="분류-알고리즘-클래스-선언"><a href="#분류-알고리즘-클래스-선언" class="headerlink" title="분류 알고리즘 클래스 선언"></a>분류 알고리즘 클래스 선언</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#Machine Learning Algorithm (MLA) Selection and Initialization</span></span><br><span class="line">MLA = [</span><br><span class="line">    <span class="comment">#Ensemble Methods</span></span><br><span class="line">    ensemble.AdaBoostClassifier(),</span><br><span class="line">    ensemble.BaggingClassifier(),</span><br><span class="line">    ensemble.ExtraTreesClassifier(),</span><br><span class="line">    ensemble.GradientBoostingClassifier(),</span><br><span class="line">    ensemble.RandomForestClassifier(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Gaussian Processes</span></span><br><span class="line">    gaussian_process.GaussianProcessClassifier(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#GLM</span></span><br><span class="line">    linear_model.LogisticRegressionCV(),</span><br><span class="line">    linear_model.PassiveAggressiveClassifier(),</span><br><span class="line">    linear_model.RidgeClassifierCV(),</span><br><span class="line">    linear_model.SGDClassifier(),</span><br><span class="line">    linear_model.Perceptron(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Navies Bayes</span></span><br><span class="line">    naive_bayes.BernoulliNB(),</span><br><span class="line">    naive_bayes.GaussianNB(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Nearest Neighbor</span></span><br><span class="line">    neighbors.KNeighborsClassifier(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#SVM</span></span><br><span class="line">    svm.SVC(probability=<span class="literal">True</span>),</span><br><span class="line">    svm.NuSVC(probability=<span class="literal">True</span>),</span><br><span class="line">    svm.LinearSVC(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Trees    </span></span><br><span class="line">    tree.DecisionTreeClassifier(),</span><br><span class="line">    tree.ExtraTreeClassifier(),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Discriminant Analysis</span></span><br><span class="line">    discriminant_analysis.LinearDiscriminantAnalysis(),</span><br><span class="line">    discriminant_analysis.QuadraticDiscriminantAnalysis(),</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#xgboost: http://xgboost.readthedocs.io/en/latest/model.html</span></span><br><span class="line">    XGBClassifier()    </span><br><span class="line">    ]</span><br></pre></td></tr></table></figure>
+
+<h4 id="테스트-1"><a href="#테스트-1" class="headerlink" title="테스트 1"></a>테스트 1</h4><ul>
+<li>복수의 분류 알고리즘 테스트 파이프라인</li>
+<li>각 알고리즘의 train/test 결과</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br></pre></td><td class="code"><pre><span class="line">Target = [<span class="string">&#x27;Survived&#x27;</span>]</span><br><span class="line">Input_col = [<span class="string">&#x27;Pclass&#x27;</span>, <span class="string">&#x27;Sex&#x27;</span>, <span class="string">&#x27;Age&#x27;</span>, <span class="string">&#x27;SibSp&#x27;</span>, <span class="string">&#x27;Parch&#x27;</span>, <span class="string">&#x27;Fare&#x27;</span>, <span class="string">&#x27;Cabin&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="string">&#x27;familySize&#x27;</span>, <span class="string">&#x27;FareBin&#x27;</span>, <span class="string">&#x27;AgeBin&#x27;</span>, <span class="string">&#x27;isAlone&#x27;</span>]</span><br><span class="line"></span><br><span class="line">data1 = train</span><br><span class="line"><span class="comment">#split dataset in cross-validation with this splitter class: http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.ShuffleSplit.html#sklearn.model_selection.ShuffleSplit</span></span><br><span class="line"><span class="comment">#note: this is an alternative to train_test_split</span></span><br><span class="line">cv_split = model_selection.ShuffleSplit(n_splits = <span class="number">10</span>, test_size = <span class="number">.3</span>, train_size = <span class="number">.6</span>, random_state = <span class="number">0</span> ) <span class="comment"># run model 10x with 60/30 split intentionally leaving out 10%</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#create table to compare MLA metrics</span></span><br><span class="line">MLA_columns = [<span class="string">&#x27;MLA Name&#x27;</span>, <span class="string">&#x27;MLA Parameters&#x27;</span>,<span class="string">&#x27;MLA Train Accuracy Mean&#x27;</span>, <span class="string">&#x27;MLA Test Accuracy Mean&#x27;</span>, <span class="string">&#x27;MLA Test Accuracy 3*STD&#x27;</span> ,<span class="string">&#x27;MLA Time&#x27;</span>]</span><br><span class="line">MLA_compare = pd.DataFrame(columns = MLA_columns)</span><br><span class="line"></span><br><span class="line"><span class="comment">#create table to compare MLA predictions</span></span><br><span class="line">MLA_predict = data1[Target]</span><br><span class="line"></span><br><span class="line"><span class="comment">#index through MLA and save performance to table</span></span><br><span class="line">row_index = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> alg <span class="keyword">in</span> MLA:</span><br><span class="line"></span><br><span class="line">    <span class="comment">#set name and parameters</span></span><br><span class="line">    MLA_name = alg.__class__.__name__</span><br><span class="line">    MLA_compare.loc[row_index, <span class="string">&#x27;MLA Name&#x27;</span>] = MLA_name</span><br><span class="line">    MLA_compare.loc[row_index, <span class="string">&#x27;MLA Parameters&#x27;</span>] = str(alg.get_params())</span><br><span class="line"></span><br><span class="line">    <span class="comment">#score model with cross validation: http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html#sklearn.model_selection.cross_validate</span></span><br><span class="line">    cv_results = model_selection.cross_validate(alg, data1[Input_col], data1[Target], cv  = cv_split, return_train_score = <span class="literal">True</span>, n_jobs=<span class="number">4</span>)</span><br><span class="line"></span><br><span class="line">    MLA_compare.loc[row_index, <span class="string">&#x27;MLA Time&#x27;</span>] = cv_results[<span class="string">&#x27;fit_time&#x27;</span>].mean()</span><br><span class="line">    MLA_compare.loc[row_index, <span class="string">&#x27;MLA Train Accuracy Mean&#x27;</span>] = cv_results[<span class="string">&#x27;train_score&#x27;</span>].mean()</span><br><span class="line">    MLA_compare.loc[row_index, <span class="string">&#x27;MLA Test Accuracy Mean&#x27;</span>] = cv_results[<span class="string">&#x27;test_score&#x27;</span>].mean()   </span><br><span class="line"></span><br><span class="line">    <span class="comment">#if this is a non-bias random sample, then +/-3 standard deviations (std) from the mean, should statistically capture 99.7% of the subsets</span></span><br><span class="line">    MLA_compare.loc[row_index, <span class="string">&#x27;MLA Test Accuracy 3*STD&#x27;</span>] = cv_results[<span class="string">&#x27;test_score&#x27;</span>].std()*<span class="number">3</span>   <span class="comment">#let&#x27;s know the worst that can happen!</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#save MLA predictions - see section 6 for usage</span></span><br><span class="line">    alg.fit(data1[Input_col], data1[Target])</span><br><span class="line">    MLA_predict[MLA_name] = alg.predict(data1[Input_col])</span><br><span class="line"></span><br><span class="line">    row_index+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#print and sort table: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sort_values.html</span></span><br><span class="line">MLA_compare.sort_values(by = [<span class="string">&#x27;MLA Test Accuracy Mean&#x27;</span>], ascending = <span class="literal">False</span>, inplace = <span class="literal">True</span>)</span><br><span class="line">MLA_compare</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MLA Name</th>
+      <th>MLA Parameters</th>
+      <th>MLA Train Accuracy Mean</th>
+      <th>MLA Test Accuracy Mean</th>
+      <th>MLA Test Accuracy 3*STD</th>
+      <th>MLA Time</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>3</th>
+      <td>GradientBoostingClassifier</td>
+      <td>{'ccp_alpha': 0.0, 'criterion': 'friedman_mse'...</td>
+      <td>0.922097</td>
+      <td>0.834701</td>
+      <td>0.0621344</td>
+      <td>0.103091</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>LogisticRegressionCV</td>
+      <td>{'Cs': 10, 'class_weight': None, 'cv': None, '...</td>
+      <td>0.83427</td>
+      <td>0.826866</td>
+      <td>0.0666397</td>
+      <td>0.980571</td>
+    </tr>
+    <tr>
+      <th>19</th>
+      <td>LinearDiscriminantAnalysis</td>
+      <td>{'n_components': None, 'priors': None, 'shrink...</td>
+      <td>0.831461</td>
+      <td>0.822761</td>
+      <td>0.0662721</td>
+      <td>0.0070276</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>RandomForestClassifier</td>
+      <td>{'bootstrap': True, 'ccp_alpha': 0.0, 'class_w...</td>
+      <td>0.990262</td>
+      <td>0.818284</td>
+      <td>0.0621344</td>
+      <td>0.18732</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>AdaBoostClassifier</td>
+      <td>{'algorithm': 'SAMME.R', 'base_estimator': Non...</td>
+      <td>0.852622</td>
+      <td>0.817537</td>
+      <td>0.0647805</td>
+      <td>0.0998992</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>RidgeClassifierCV</td>
+      <td>{'alphas': array([ 0.1,  1. , 10. ]), 'class_w...</td>
+      <td>0.833146</td>
+      <td>0.817537</td>
+      <td>0.0591168</td>
+      <td>0.00956466</td>
+    </tr>
+    <tr>
+      <th>21</th>
+      <td>XGBClassifier</td>
+      <td>{'objective': 'binary:logistic', 'base_score':...</td>
+      <td>0.983333</td>
+      <td>0.814179</td>
+      <td>0.0589788</td>
+      <td>0.0819842</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>BaggingClassifier</td>
+      <td>{'base_estimator': None, 'bootstrap': True, 'b...</td>
+      <td>0.97191</td>
+      <td>0.811567</td>
+      <td>0.0703088</td>
+      <td>0.0281174</td>
+    </tr>
+    <tr>
+      <th>15</th>
+      <td>NuSVC</td>
+      <td>{'break_ties': False, 'cache_size': 200, 'clas...</td>
+      <td>0.827154</td>
+      <td>0.800373</td>
+      <td>0.0629757</td>
+      <td>0.0798487</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>ExtraTreesClassifier</td>
+      <td>{'bootstrap': False, 'ccp_alpha': 0.0, 'class_...</td>
+      <td>0.990262</td>
+      <td>0.795896</td>
+      <td>0.0592438</td>
+      <td>0.161286</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>GaussianNB</td>
+      <td>{'priors': None, 'var_smoothing': 1e-09}</td>
+      <td>0.808801</td>
+      <td>0.794403</td>
+      <td>0.0744971</td>
+      <td>0.00702934</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>BernoulliNB</td>
+      <td>{'alpha': 1.0, 'binarize': 0.0, 'class_prior':...</td>
+      <td>0.79588</td>
+      <td>0.786567</td>
+      <td>0.0534039</td>
+      <td>0.0066855</td>
+    </tr>
+    <tr>
+      <th>17</th>
+      <td>DecisionTreeClassifier</td>
+      <td>{'ccp_alpha': 0.0, 'class_weight': None, 'crit...</td>
+      <td>0.990262</td>
+      <td>0.775</td>
+      <td>0.0709829</td>
+      <td>0.00528812</td>
+    </tr>
+    <tr>
+      <th>18</th>
+      <td>ExtraTreeClassifier</td>
+      <td>{'ccp_alpha': 0.0, 'class_weight': None, 'crit...</td>
+      <td>0.990262</td>
+      <td>0.772388</td>
+      <td>0.0791537</td>
+      <td>0.00439491</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>KNeighborsClassifier</td>
+      <td>{'algorithm': 'auto', 'leaf_size': 30, 'metric...</td>
+      <td>0.798315</td>
+      <td>0.738806</td>
+      <td>0.0723727</td>
+      <td>0.00712559</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>GaussianProcessClassifier</td>
+      <td>{'copy_X_train': True, 'kernel': None, 'max_it...</td>
+      <td>0.968727</td>
+      <td>0.733582</td>
+      <td>0.054885</td>
+      <td>0.434667</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>PassiveAggressiveClassifier</td>
+      <td>{'C': 1.0, 'average': False, 'class_weight': N...</td>
+      <td>0.71779</td>
+      <td>0.715672</td>
+      <td>0.210245</td>
+      <td>0.00498023</td>
+    </tr>
+    <tr>
+      <th>16</th>
+      <td>LinearSVC</td>
+      <td>{'C': 1.0, 'class_weight': None, 'dual': True,...</td>
+      <td>0.726217</td>
+      <td>0.714925</td>
+      <td>0.382803</td>
+      <td>0.0413757</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>Perceptron</td>
+      <td>{'alpha': 0.0001, 'class_weight': None, 'early...</td>
+      <td>0.690824</td>
+      <td>0.686567</td>
+      <td>0.337236</td>
+      <td>0.00584321</td>
+    </tr>
+    <tr>
+      <th>14</th>
+      <td>SVC</td>
+      <td>{'C': 1.0, 'break_ties': False, 'cache_size': ...</td>
+      <td>0.688951</td>
+      <td>0.685075</td>
+      <td>0.06356</td>
+      <td>0.0481072</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>SGDClassifier</td>
+      <td>{'alpha': 0.0001, 'average': False, 'class_wei...</td>
+      <td>0.669101</td>
+      <td>0.670149</td>
+      <td>0.276572</td>
+      <td>0.0061487</td>
+    </tr>
+    <tr>
+      <th>20</th>
+      <td>QuadraticDiscriminantAnalysis</td>
+      <td>{'priors': None, 'reg_param': 0.0, 'store_cova...</td>
+      <td>0.615169</td>
+      <td>0.614925</td>
+      <td>0.0418243</td>
+      <td>0.00936949</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h4 id="테스트2-Voting-분류-알고리즘"><a href="#테스트2-Voting-분류-알고리즘" class="headerlink" title="테스트2: Voting 분류 알고리즘"></a>테스트2: Voting 분류 알고리즘</h4><ul>
+<li>다양한 알고리즘의 결과를 앙상블한 결과<ul>
+<li>hard voting: 다수결</li>
+<li>soft voting: 결과 분포 결합</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br></pre></td><td class="code"><pre><span class="line">vote_est = [</span><br><span class="line">    <span class="comment">#Ensemble Methods: http://scikit-learn.org/stable/modules/ensemble.html</span></span><br><span class="line">    (<span class="string">&#x27;ada&#x27;</span>, ensemble.AdaBoostClassifier()),</span><br><span class="line">    (<span class="string">&#x27;bc&#x27;</span>, ensemble.BaggingClassifier()),</span><br><span class="line">    (<span class="string">&#x27;etc&#x27;</span>,ensemble.ExtraTreesClassifier()),</span><br><span class="line">    (<span class="string">&#x27;gbc&#x27;</span>, ensemble.GradientBoostingClassifier()),</span><br><span class="line">    (<span class="string">&#x27;rfc&#x27;</span>, ensemble.RandomForestClassifier()),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Gaussian Processes: http://scikit-learn.org/stable/modules/gaussian_process.html#gaussian-process-classification-gpc</span></span><br><span class="line">    (<span class="string">&#x27;gpc&#x27;</span>, gaussian_process.GaussianProcessClassifier()),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#GLM: http://scikit-learn.org/stable/modules/linear_model.html#logistic-regression</span></span><br><span class="line">    (<span class="string">&#x27;lr&#x27;</span>, linear_model.LogisticRegressionCV()),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Navies Bayes: http://scikit-learn.org/stable/modules/naive_bayes.html</span></span><br><span class="line">    (<span class="string">&#x27;bnb&#x27;</span>, naive_bayes.BernoulliNB()),</span><br><span class="line">    (<span class="string">&#x27;gnb&#x27;</span>, naive_bayes.GaussianNB()),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#Nearest Neighbor: http://scikit-learn.org/stable/modules/neighbors.html</span></span><br><span class="line">    (<span class="string">&#x27;knn&#x27;</span>, neighbors.KNeighborsClassifier()),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#SVM: http://scikit-learn.org/stable/modules/svm.html</span></span><br><span class="line">    (<span class="string">&#x27;svc&#x27;</span>, svm.SVC(probability=<span class="literal">True</span>)),</span><br><span class="line"></span><br><span class="line">    <span class="comment">#xgboost: http://xgboost.readthedocs.io/en/latest/model.html</span></span><br><span class="line">   (<span class="string">&#x27;xgb&#x27;</span>, XGBClassifier())</span><br><span class="line"></span><br><span class="line">]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Hard Vote or majority rules</span></span><br><span class="line">vote_hard = ensemble.VotingClassifier(estimators = vote_est , voting = <span class="string">&#x27;hard&#x27;</span>)</span><br><span class="line">vote_hard_cv = model_selection.cross_validate(vote_hard, data1[Input_col], data1[Target], cv  = cv_split, return_train_score = <span class="literal">True</span>, n_jobs=<span class="number">4</span>)</span><br><span class="line">vote_hard.fit(data1[Input_col], data1[Target])</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Hard Voting Training w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(vote_hard_cv[<span class="string">&#x27;train_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Hard Voting Test w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(vote_hard_cv[<span class="string">&#x27;test_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Hard Voting Test w/bin score 3*std: +/- &#123;:.2f&#125;&quot;</span>. format(vote_hard_cv[<span class="string">&#x27;test_score&#x27;</span>].std()*<span class="number">100</span>*<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#Soft Vote or weighted probabilities</span></span><br><span class="line">vote_soft = ensemble.VotingClassifier(estimators = vote_est , voting = <span class="string">&#x27;soft&#x27;</span>)</span><br><span class="line">vote_soft_cv = model_selection.cross_validate(vote_soft, data1[Input_col], data1[Target], cv  = cv_split, return_train_score = <span class="literal">True</span>, n_jobs=<span class="number">4</span>)</span><br><span class="line">vote_soft.fit(data1[Input_col], data1[Target])</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Soft Voting Training w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(vote_soft_cv[<span class="string">&#x27;train_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Soft Voting Test w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(vote_soft_cv[<span class="string">&#x27;test_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Soft Voting Test w/bin score 3*std: +/- &#123;:.2f&#125;&quot;</span>. format(vote_soft_cv[<span class="string">&#x27;test_score&#x27;</span>].std()*<span class="number">100</span>*<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">10</span>)</span><br></pre></td></tr></table></figure>
+
+<pre><code>Hard Voting Training w/bin score mean: 94.46
+Hard Voting Test w/bin score mean: 83.10
+Hard Voting Test w/bin score 3*std: +/- 7.26
+----------
+Soft Voting Training w/bin score mean: 94.29
+Soft Voting Test w/bin score mean: 83.32
+Soft Voting Test w/bin score 3*std: +/- 6.07
+----------</code></pre>
+<h4 id="테스트3-파라미터-최적화"><a href="#테스트3-파라미터-최적화" class="headerlink" title="테스트3: 파라미터 최적화"></a>테스트3: 파라미터 최적화</h4><ul>
+<li><p>각 모델의 파라미터 범위 설정</p>
+</li>
+<li><p>범위 안에서 모델 성능이 가장 좋은 파리미터를 찾음</p>
+</li>
+<li><p>범위에 따라서 탐색 시간이 증가</p>
+</li>
+<li><p>GridSearchCV: CV로 파라미터 Grid search</p>
+</li>
+<li><p>vote_est: 파라미터 탐색 후 파라미터가 저장된 모델 클래스를 갖고있음</p>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br><span class="line">112</span><br><span class="line">113</span><br><span class="line">114</span><br><span class="line">115</span><br><span class="line">116</span><br><span class="line">117</span><br><span class="line">118</span><br><span class="line">119</span><br><span class="line">120</span><br><span class="line">121</span><br><span class="line">122</span><br><span class="line">123</span><br><span class="line">124</span><br><span class="line">125</span><br><span class="line">126</span><br><span class="line">127</span><br><span class="line">128</span><br><span class="line">129</span><br><span class="line">130</span><br><span class="line">131</span><br><span class="line">132</span><br><span class="line">133</span><br><span class="line">134</span><br><span class="line">135</span><br><span class="line">136</span><br><span class="line">137</span><br><span class="line">138</span><br><span class="line">139</span><br><span class="line">140</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#WARNING: Running is very computational intensive and time expensive.</span></span><br><span class="line"><span class="comment">#Code is written for experimental/developmental purposes and not production ready!</span></span><br><span class="line"><span class="keyword">import</span> time</span><br><span class="line"></span><br><span class="line"><span class="comment">#Hyperparameter Tune with GridSearchCV: http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.GridSearchCV.html</span></span><br><span class="line">grid_n_estimator = [<span class="number">10</span>, <span class="number">50</span>, <span class="number">100</span>, <span class="number">300</span>]</span><br><span class="line">grid_ratio = [<span class="number">.1</span>, <span class="number">.25</span>, <span class="number">.5</span>, <span class="number">.75</span>, <span class="number">1.0</span>]</span><br><span class="line">grid_learn = [<span class="number">.01</span>, <span class="number">.03</span>, <span class="number">.05</span>, <span class="number">.1</span>, <span class="number">.25</span>]</span><br><span class="line">grid_max_depth = [<span class="number">2</span>, <span class="number">4</span>, <span class="number">6</span>, <span class="number">8</span>, <span class="number">10</span>, <span class="literal">None</span>]</span><br><span class="line">grid_min_samples = [<span class="number">5</span>, <span class="number">10</span>, <span class="number">.03</span>, <span class="number">.05</span>, <span class="number">.10</span>]</span><br><span class="line">grid_criterion = [<span class="string">&#x27;gini&#x27;</span>, <span class="string">&#x27;entropy&#x27;</span>]</span><br><span class="line">grid_bool = [<span class="literal">True</span>, <span class="literal">False</span>]</span><br><span class="line">grid_seed = [<span class="number">0</span>]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">grid_param = [</span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#AdaBoostClassifier - http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.AdaBoostClassifier.html</span></span><br><span class="line">            <span class="string">&#x27;n_estimators&#x27;</span>: grid_n_estimator, <span class="comment">#default=50</span></span><br><span class="line">            <span class="string">&#x27;learning_rate&#x27;</span>: grid_learn, <span class="comment">#default=1</span></span><br><span class="line">            <span class="comment">#&#x27;algorithm&#x27;: [&#x27;SAMME&#x27;, &#x27;SAMME.R&#x27;], #default=’SAMME.R</span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#BaggingClassifier - http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.BaggingClassifier.html#sklearn.ensemble.BaggingClassifier</span></span><br><span class="line">            <span class="string">&#x27;n_estimators&#x27;</span>: grid_n_estimator, <span class="comment">#default=10</span></span><br><span class="line">            <span class="string">&#x27;max_samples&#x27;</span>: grid_ratio, <span class="comment">#default=1.0</span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#ExtraTreesClassifier - http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.ExtraTreesClassifier.html#sklearn.ensemble.ExtraTreesClassifier</span></span><br><span class="line">            <span class="string">&#x27;n_estimators&#x27;</span>: grid_n_estimator, <span class="comment">#default=10</span></span><br><span class="line">            <span class="string">&#x27;criterion&#x27;</span>: grid_criterion, <span class="comment">#default=”gini”</span></span><br><span class="line">            <span class="string">&#x27;max_depth&#x27;</span>: grid_max_depth, <span class="comment">#default=None</span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#GradientBoostingClassifier - http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.GradientBoostingClassifier.html#sklearn.ensemble.GradientBoostingClassifier</span></span><br><span class="line">            <span class="comment">#&#x27;loss&#x27;: [&#x27;deviance&#x27;, &#x27;exponential&#x27;], #default=’deviance’</span></span><br><span class="line">            <span class="string">&#x27;learning_rate&#x27;</span>: [<span class="number">.05</span>], <span class="comment">#default=0.1 -- 12/31/17 set to reduce runtime -- The best parameter for GradientBoostingClassifier is &#123;&#x27;learning_rate&#x27;: 0.05, &#x27;max_depth&#x27;: 2, &#x27;n_estimators&#x27;: 300, &#x27;random_state&#x27;: 0&#125; with a runtime of 264.45 seconds.</span></span><br><span class="line">            <span class="string">&#x27;n_estimators&#x27;</span>: [<span class="number">300</span>], <span class="comment">#default=100 -- 12/31/17 set to reduce runtime -- The best parameter for GradientBoostingClassifier is &#123;&#x27;learning_rate&#x27;: 0.05, &#x27;max_depth&#x27;: 2, &#x27;n_estimators&#x27;: 300, &#x27;random_state&#x27;: 0&#125; with a runtime of 264.45 seconds.</span></span><br><span class="line">            <span class="comment">#&#x27;criterion&#x27;: [&#x27;friedman_mse&#x27;, &#x27;mse&#x27;, &#x27;mae&#x27;], #default=”friedman_mse”</span></span><br><span class="line">            <span class="string">&#x27;max_depth&#x27;</span>: grid_max_depth, <span class="comment">#default=3   </span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#RandomForestClassifier - http://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html#sklearn.ensemble.RandomForestClassifier</span></span><br><span class="line">            <span class="string">&#x27;n_estimators&#x27;</span>: grid_n_estimator, <span class="comment">#default=10</span></span><br><span class="line">            <span class="string">&#x27;criterion&#x27;</span>: grid_criterion, <span class="comment">#default=”gini”</span></span><br><span class="line">            <span class="string">&#x27;max_depth&#x27;</span>: grid_max_depth, <span class="comment">#default=None</span></span><br><span class="line">            <span class="string">&#x27;oob_score&#x27;</span>: [<span class="literal">True</span>], <span class="comment">#default=False -- 12/31/17 set to reduce runtime -- The best parameter for RandomForestClassifier is &#123;&#x27;criterion&#x27;: &#x27;entropy&#x27;, &#x27;max_depth&#x27;: 6, &#x27;n_estimators&#x27;: 100, &#x27;oob_score&#x27;: True, &#x27;random_state&#x27;: 0&#125; with a runtime of 146.35 seconds.</span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line">            [&#123;    </span><br><span class="line">            <span class="comment">#GaussianProcessClassifier</span></span><br><span class="line">            <span class="string">&#x27;max_iter_predict&#x27;</span>: grid_n_estimator, <span class="comment">#default: 100</span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#LogisticRegressionCV - http://scikit-learn.org/stable/modules/generated/sklearn.linear_model.LogisticRegressionCV.html#sklearn.linear_model.LogisticRegressionCV</span></span><br><span class="line">            <span class="string">&#x27;fit_intercept&#x27;</span>: grid_bool, <span class="comment">#default: True</span></span><br><span class="line">            <span class="comment">#&#x27;penalty&#x27;: [&#x27;l1&#x27;,&#x27;l2&#x27;],</span></span><br><span class="line">            <span class="string">&#x27;solver&#x27;</span>: [<span class="string">&#x27;newton-cg&#x27;</span>, <span class="string">&#x27;lbfgs&#x27;</span>, <span class="string">&#x27;liblinear&#x27;</span>, <span class="string">&#x27;sag&#x27;</span>, <span class="string">&#x27;saga&#x27;</span>], <span class="comment">#default: lbfgs</span></span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#BernoulliNB - http://scikit-learn.org/stable/modules/generated/sklearn.naive_bayes.BernoulliNB.html#sklearn.naive_bayes.BernoulliNB</span></span><br><span class="line">            <span class="string">&#x27;alpha&#x27;</span>: grid_ratio, <span class="comment">#default: 1.0</span></span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="comment">#GaussianNB -</span></span><br><span class="line">            [&#123;&#125;],</span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#KNeighborsClassifier - http://scikit-learn.org/stable/modules/generated/sklearn.neighbors.KNeighborsClassifier.html#sklearn.neighbors.KNeighborsClassifier</span></span><br><span class="line">            <span class="string">&#x27;n_neighbors&#x27;</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>,<span class="number">6</span>,<span class="number">7</span>], <span class="comment">#default: 5</span></span><br><span class="line">            <span class="string">&#x27;weights&#x27;</span>: [<span class="string">&#x27;uniform&#x27;</span>, <span class="string">&#x27;distance&#x27;</span>], <span class="comment">#default = ‘uniform’</span></span><br><span class="line">            <span class="string">&#x27;algorithm&#x27;</span>: [<span class="string">&#x27;auto&#x27;</span>, <span class="string">&#x27;ball_tree&#x27;</span>, <span class="string">&#x27;kd_tree&#x27;</span>, <span class="string">&#x27;brute&#x27;</span>]</span><br><span class="line">            &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#SVC - http://scikit-learn.org/stable/modules/generated/sklearn.svm.SVC.html#sklearn.svm.SVC</span></span><br><span class="line">            <span class="comment">#http://blog.hackerearth.com/simple-tutorial-svm-parameter-tuning-python-r</span></span><br><span class="line">            <span class="comment">#&#x27;kernel&#x27;: [&#x27;linear&#x27;, &#x27;poly&#x27;, &#x27;rbf&#x27;, &#x27;sigmoid&#x27;],</span></span><br><span class="line">            <span class="string">&#x27;C&#x27;</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">3</span>,<span class="number">4</span>,<span class="number">5</span>], <span class="comment">#default=1.0</span></span><br><span class="line">            <span class="string">&#x27;gamma&#x27;</span>: grid_ratio, <span class="comment">#edfault: auto</span></span><br><span class="line">            <span class="string">&#x27;decision_function_shape&#x27;</span>: [<span class="string">&#x27;ovo&#x27;</span>, <span class="string">&#x27;ovr&#x27;</span>], <span class="comment">#default:ovr</span></span><br><span class="line">            <span class="string">&#x27;probability&#x27;</span>: [<span class="literal">True</span>],</span><br><span class="line">            <span class="string">&#x27;random_state&#x27;</span>: grid_seed</span><br><span class="line">             &#125;],</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [&#123;</span><br><span class="line">            <span class="comment">#XGBClassifier - http://xgboost.readthedocs.io/en/latest/parameter.html</span></span><br><span class="line">            <span class="string">&#x27;learning_rate&#x27;</span>: grid_learn, <span class="comment">#default: .3</span></span><br><span class="line">            <span class="string">&#x27;max_depth&#x27;</span>: [<span class="number">1</span>,<span class="number">2</span>,<span class="number">4</span>,<span class="number">6</span>,<span class="number">8</span>,<span class="number">10</span>], <span class="comment">#default 2</span></span><br><span class="line">            <span class="string">&#x27;n_estimators&#x27;</span>: grid_n_estimator,</span><br><span class="line">            <span class="string">&#x27;seed&#x27;</span>: grid_seed  </span><br><span class="line">             &#125;]   </span><br><span class="line">        ]</span><br><span class="line"></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">start_total = time.perf_counter() <span class="comment">#https://docs.python.org/3/library/time.html#time.perf_counter</span></span><br><span class="line"><span class="keyword">for</span> clf, param <span class="keyword">in</span> zip (vote_est, grid_param): <span class="comment">#https://docs.python.org/3/library/functions.html#zip</span></span><br><span class="line"></span><br><span class="line">    <span class="comment">#print(clf[1]) #vote_est is a list of tuples, index 0 is the name and index 1 is the algorithm</span></span><br><span class="line">    <span class="comment">#print(param)</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    start = time.perf_counter()        </span><br><span class="line">    best_search = model_selection.GridSearchCV(estimator = clf[<span class="number">1</span>], param_grid = param, cv = cv_split, scoring = <span class="string">&#x27;roc_auc&#x27;</span>, n_jobs=<span class="number">8</span>)</span><br><span class="line">    best_search.fit(data1[Input_col], data1[Target])</span><br><span class="line">    run = time.perf_counter() - start</span><br><span class="line"></span><br><span class="line">    best_param = best_search.best_params_</span><br><span class="line">    print(<span class="string">&#x27;The best parameter for &#123;&#125; is &#123;&#125; with a runtime of &#123;:.2f&#125; seconds.&#x27;</span>.format(clf[<span class="number">1</span>].__class__.__name__, best_param, run))</span><br><span class="line">    clf[<span class="number">1</span>].set_params(**best_param)</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">run_total = time.perf_counter() - start_total</span><br><span class="line">print(<span class="string">&#x27;Total optimization time was &#123;:.2f&#125; minutes.&#x27;</span>.format(run_total/<span class="number">60</span>))</span><br><span class="line"></span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">10</span>)</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+<pre><code>The best parameter for AdaBoostClassifier is &#123;&#39;learning_rate&#39;: 0.05, &#39;n_estimators&#39;: 300, &#39;random_state&#39;: 0&#125; with a runtime of 15.58 seconds.
+The best parameter for BaggingClassifier is &#123;&#39;max_samples&#39;: 0.5, &#39;n_estimators&#39;: 300, &#39;random_state&#39;: 0&#125; with a runtime of 12.12 seconds.
+The best parameter for ExtraTreesClassifier is &#123;&#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: 8, &#39;n_estimators&#39;: 100, &#39;random_state&#39;: 0&#125; with a runtime of 16.44 seconds.
+The best parameter for GradientBoostingClassifier is &#123;&#39;learning_rate&#39;: 0.05, &#39;max_depth&#39;: 2, &#39;n_estimators&#39;: 300, &#39;random_state&#39;: 0&#125; with a runtime of 9.63 seconds.
+The best parameter for RandomForestClassifier is &#123;&#39;criterion&#39;: &#39;entropy&#39;, &#39;max_depth&#39;: 8, &#39;n_estimators&#39;: 300, &#39;oob_score&#39;: True, &#39;random_state&#39;: 0&#125; with a runtime of 27.32 seconds.
+The best parameter for GaussianProcessClassifier is &#123;&#39;max_iter_predict&#39;: 10, &#39;random_state&#39;: 0&#125; with a runtime of 5.10 seconds.
+The best parameter for LogisticRegressionCV is &#123;&#39;fit_intercept&#39;: False, &#39;random_state&#39;: 0, &#39;solver&#39;: &#39;lbfgs&#39;&#125; with a runtime of 12.16 seconds.
+The best parameter for BernoulliNB is &#123;&#39;alpha&#39;: 0.25&#125; with a runtime of 0.16 seconds.
+The best parameter for GaussianNB is &#123;&#125; with a runtime of 0.05 seconds.
+The best parameter for KNeighborsClassifier is &#123;&#39;algorithm&#39;: &#39;brute&#39;, &#39;n_neighbors&#39;: 7, &#39;weights&#39;: &#39;distance&#39;&#125; with a runtime of 1.74 seconds.
+The best parameter for SVC is &#123;&#39;C&#39;: 2, &#39;decision_function_shape&#39;: &#39;ovo&#39;, &#39;gamma&#39;: 0.1, &#39;probability&#39;: True, &#39;random_state&#39;: 0&#125; with a runtime of 8.65 seconds.
+The best parameter for XGBClassifier is &#123;&#39;learning_rate&#39;: 0.05, &#39;max_depth&#39;: 2, &#39;n_estimators&#39;: 300, &#39;seed&#39;: 0&#125; with a runtime of 20.32 seconds.
+Total optimization time was 2.15 minutes.
+----------</code></pre>
+<h4 id="테스트4-최적화된-파라미터-개별-성능-측정-및-테스트-1과-비교"><a href="#테스트4-최적화된-파라미터-개별-성능-측정-및-테스트-1과-비교" class="headerlink" title="테스트4: 최적화된 파라미터 개별 성능 측정 및 테스트 1과 비교"></a>테스트4: 최적화된 파라미터 개별 성능 측정 및 테스트 1과 비교</h4><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br></pre></td><td class="code"><pre><span class="line">Target = [<span class="string">&#x27;Survived&#x27;</span>]</span><br><span class="line">Input_col = [<span class="string">&#x27;Pclass&#x27;</span>, <span class="string">&#x27;Sex&#x27;</span>, <span class="string">&#x27;Age&#x27;</span>, <span class="string">&#x27;SibSp&#x27;</span>, <span class="string">&#x27;Parch&#x27;</span>, <span class="string">&#x27;Fare&#x27;</span>, <span class="string">&#x27;Cabin&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="string">&#x27;familySize&#x27;</span>, <span class="string">&#x27;FareBin&#x27;</span>, <span class="string">&#x27;AgeBin&#x27;</span>, <span class="string">&#x27;isAlone&#x27;</span>]</span><br><span class="line"></span><br><span class="line"><span class="comment">#create table to compare MLA metrics</span></span><br><span class="line">MLA_columns_opt = [<span class="string">&#x27;MLA Name&#x27;</span>, <span class="string">&#x27;MLA Parameters opt&#x27;</span>,<span class="string">&#x27;MLA Train Accuracy Mean opt&#x27;</span>, <span class="string">&#x27;MLA Test Accuracy Mean opt&#x27;</span>, <span class="string">&#x27;MLA Test Accuracy 3*STD opt&#x27;</span> ,<span class="string">&#x27;MLA Time opt&#x27;</span>]</span><br><span class="line">MLA_compare_opt = pd.DataFrame(columns = MLA_columns_opt)</span><br><span class="line"></span><br><span class="line"><span class="comment">#create table to compare MLA predictions</span></span><br><span class="line">MLA_predict_opt = data1[Target]</span><br><span class="line"></span><br><span class="line"><span class="comment">#index through MLA and save performance to table</span></span><br><span class="line">row_index = <span class="number">0</span></span><br><span class="line"><span class="keyword">for</span> algs <span class="keyword">in</span> vote_est:</span><br><span class="line">    alg = algs[<span class="number">1</span>]</span><br><span class="line">    <span class="comment">#set name and parameters</span></span><br><span class="line">    MLA_name = alg.__class__.__name__</span><br><span class="line">    MLA_compare_opt.loc[row_index, <span class="string">&#x27;MLA Name&#x27;</span>] = MLA_name</span><br><span class="line">    MLA_compare_opt.loc[row_index, <span class="string">&#x27;MLA Parameters opt&#x27;</span>] = str(alg.get_params())</span><br><span class="line"></span><br><span class="line">    <span class="comment">#score model with cross validation: http://scikit-learn.org/stable/modules/generated/sklearn.model_selection.cross_validate.html#sklearn.model_selection.cross_validate</span></span><br><span class="line">    cv_results = model_selection.cross_validate(alg, data1[Input_col], data1[Target], cv  = cv_split, return_train_score = <span class="literal">True</span>, n_jobs=<span class="number">8</span>)</span><br><span class="line"></span><br><span class="line">    MLA_compare_opt.loc[row_index, <span class="string">&#x27;MLA Time opt&#x27;</span>] = cv_results[<span class="string">&#x27;fit_time&#x27;</span>].mean()</span><br><span class="line">    MLA_compare_opt.loc[row_index, <span class="string">&#x27;MLA Train Accuracy Mean opt&#x27;</span>] = cv_results[<span class="string">&#x27;train_score&#x27;</span>].mean()</span><br><span class="line">    MLA_compare_opt.loc[row_index, <span class="string">&#x27;MLA Test Accuracy Mean opt&#x27;</span>] = cv_results[<span class="string">&#x27;test_score&#x27;</span>].mean()   </span><br><span class="line"></span><br><span class="line">    <span class="comment">#if this is a non-bias random sample, then +/-3 standard deviations (std) from the mean, should statistically capture 99.7% of the subsets</span></span><br><span class="line">    MLA_compare_opt.loc[row_index, <span class="string">&#x27;MLA Test Accuracy 3*STD opt&#x27;</span>] = cv_results[<span class="string">&#x27;test_score&#x27;</span>].std()*<span class="number">3</span>   <span class="comment">#let&#x27;s know the worst that can happen!</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line">    <span class="comment">#save MLA predictions - see section 6 for usage</span></span><br><span class="line">    alg.fit(data1[Input_col], data1[Target])</span><br><span class="line">    MLA_predict_opt[MLA_name] = alg.predict(data1[Input_col])</span><br><span class="line"></span><br><span class="line">    row_index+=<span class="number">1</span></span><br><span class="line"></span><br><span class="line"></span><br><span class="line"><span class="comment">#print and sort table: https://pandas.pydata.org/pandas-docs/stable/generated/pandas.DataFrame.sort_values.html</span></span><br><span class="line">MLA_compare_opt.sort_values(by = [<span class="string">&#x27;MLA Test Accuracy Mean opt&#x27;</span>], ascending = <span class="literal">False</span>, inplace = <span class="literal">True</span>)</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.merge(MLA_compare, MLA_compare_opt, on=<span class="string">&#x27;MLA Name&#x27;</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>MLA Name</th>
+      <th>MLA Parameters</th>
+      <th>MLA Train Accuracy Mean</th>
+      <th>MLA Test Accuracy Mean</th>
+      <th>MLA Test Accuracy 3*STD</th>
+      <th>MLA Time</th>
+      <th>MLA Parameters opt</th>
+      <th>MLA Train Accuracy Mean opt</th>
+      <th>MLA Test Accuracy Mean opt</th>
+      <th>MLA Test Accuracy 3*STD opt</th>
+      <th>MLA Time opt</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>0</th>
+      <td>GradientBoostingClassifier</td>
+      <td>{'ccp_alpha': 0.0, 'criterion': 'friedman_mse'...</td>
+      <td>0.922097</td>
+      <td>0.834701</td>
+      <td>0.0621344</td>
+      <td>0.103091</td>
+      <td>{'ccp_alpha': 0.0, 'criterion': 'friedman_mse'...</td>
+      <td>0.890075</td>
+      <td>0.829104</td>
+      <td>0.0612713</td>
+      <td>0.329587</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>LogisticRegressionCV</td>
+      <td>{'Cs': 10, 'class_weight': None, 'cv': None, '...</td>
+      <td>0.83427</td>
+      <td>0.826866</td>
+      <td>0.0666397</td>
+      <td>0.980571</td>
+      <td>{'Cs': 10, 'class_weight': None, 'cv': None, '...</td>
+      <td>0.834457</td>
+      <td>0.828358</td>
+      <td>0.0682744</td>
+      <td>1.14401</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>RandomForestClassifier</td>
+      <td>{'bootstrap': True, 'ccp_alpha': 0.0, 'class_w...</td>
+      <td>0.990262</td>
+      <td>0.818284</td>
+      <td>0.0621344</td>
+      <td>0.18732</td>
+      <td>{'bootstrap': True, 'ccp_alpha': 0.0, 'class_w...</td>
+      <td>0.923034</td>
+      <td>0.829478</td>
+      <td>0.0607063</td>
+      <td>0.937333</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>AdaBoostClassifier</td>
+      <td>{'algorithm': 'SAMME.R', 'base_estimator': Non...</td>
+      <td>0.852622</td>
+      <td>0.817537</td>
+      <td>0.0647805</td>
+      <td>0.0998992</td>
+      <td>{'algorithm': 'SAMME.R', 'base_estimator': Non...</td>
+      <td>0.839139</td>
+      <td>0.820896</td>
+      <td>0.0652718</td>
+      <td>0.869148</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>XGBClassifier</td>
+      <td>{'objective': 'binary:logistic', 'base_score':...</td>
+      <td>0.983333</td>
+      <td>0.814179</td>
+      <td>0.0589788</td>
+      <td>0.0819842</td>
+      <td>{'objective': 'binary:logistic', 'base_score':...</td>
+      <td>0.876404</td>
+      <td>0.826493</td>
+      <td>0.0660827</td>
+      <td>0.146845</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>BaggingClassifier</td>
+      <td>{'base_estimator': None, 'bootstrap': True, 'b...</td>
+      <td>0.97191</td>
+      <td>0.811567</td>
+      <td>0.0703088</td>
+      <td>0.0281174</td>
+      <td>{'base_estimator': None, 'bootstrap': True, 'b...</td>
+      <td>0.941011</td>
+      <td>0.830597</td>
+      <td>0.0711856</td>
+      <td>0.929337</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>ExtraTreesClassifier</td>
+      <td>{'bootstrap': False, 'ccp_alpha': 0.0, 'class_...</td>
+      <td>0.990262</td>
+      <td>0.795896</td>
+      <td>0.0592438</td>
+      <td>0.161286</td>
+      <td>{'bootstrap': False, 'ccp_alpha': 0.0, 'class_...</td>
+      <td>0.901124</td>
+      <td>0.826493</td>
+      <td>0.0464923</td>
+      <td>0.180431</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>GaussianNB</td>
+      <td>{'priors': None, 'var_smoothing': 1e-09}</td>
+      <td>0.808801</td>
+      <td>0.794403</td>
+      <td>0.0744971</td>
+      <td>0.00702934</td>
+      <td>{'priors': None, 'var_smoothing': 1e-09}</td>
+      <td>0.808801</td>
+      <td>0.794403</td>
+      <td>0.0744971</td>
+      <td>0.00517395</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>BernoulliNB</td>
+      <td>{'alpha': 1.0, 'binarize': 0.0, 'class_prior':...</td>
+      <td>0.79588</td>
+      <td>0.786567</td>
+      <td>0.0534039</td>
+      <td>0.0066855</td>
+      <td>{'alpha': 0.25, 'binarize': 0.0, 'class_prior'...</td>
+      <td>0.796067</td>
+      <td>0.786194</td>
+      <td>0.0534625</td>
+      <td>0.00512936</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>KNeighborsClassifier</td>
+      <td>{'algorithm': 'auto', 'leaf_size': 30, 'metric...</td>
+      <td>0.798315</td>
+      <td>0.738806</td>
+      <td>0.0723727</td>
+      <td>0.00712559</td>
+      <td>{'algorithm': 'brute', 'leaf_size': 30, 'metri...</td>
+      <td>0.990262</td>
+      <td>0.739925</td>
+      <td>0.0785259</td>
+      <td>0.00783632</td>
+    </tr>
+    <tr>
+      <th>10</th>
+      <td>GaussianProcessClassifier</td>
+      <td>{'copy_X_train': True, 'kernel': None, 'max_it...</td>
+      <td>0.968727</td>
+      <td>0.733582</td>
+      <td>0.054885</td>
+      <td>0.434667</td>
+      <td>{'copy_X_train': True, 'kernel': None, 'max_it...</td>
+      <td>0.968727</td>
+      <td>0.733582</td>
+      <td>0.054885</td>
+      <td>0.651379</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>SVC</td>
+      <td>{'C': 1.0, 'break_ties': False, 'cache_size': ...</td>
+      <td>0.688951</td>
+      <td>0.685075</td>
+      <td>0.06356</td>
+      <td>0.0481072</td>
+      <td>{'C': 2, 'break_ties': False, 'cache_size': 20...</td>
+      <td>0.94382</td>
+      <td>0.727985</td>
+      <td>0.0605824</td>
+      <td>0.0867202</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+
+
+<h4 id="테스트5-파라미터-최적화-후-Voting-분류-알고리즘"><a href="#테스트5-파라미터-최적화-후-Voting-분류-알고리즘" class="headerlink" title="테스트5: 파라미터 최적화 후 Voting 분류 알고리즘"></a>테스트5: 파라미터 최적화 후 Voting 분류 알고리즘</h4><ul>
+<li>최적화된 파리미터 저장: vote_est</li>
+<li>최적화된 파라미터로 hard / soft vote 모델링</li>
+<li>hard vote<ul>
+<li>train 에러: 파라미터 최적화 전보다 감소 -&gt; 오버피팅 감소</li>
+<li>test 에러 : 파라미터 최적화 전보다 증가 -&gt; 오버피팅 감소로 인한 성능 향상</li>
+</ul>
+</li>
+<li>soft vote<ul>
+<li>train 에러: 파라미터 최적화 전보다 감소 -&gt; 오버피팅 감소</li>
+<li>test 에러 : 파라미터 최적화 전보다 감소 -&gt; 오버피팅 감소가 아닌 전체적 성능 하락으로 판단/ 단 모델 분산 감소</li>
+</ul>
+</li>
+</ul>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">start_total = time.perf_counter() <span class="comment">#https://docs.python.org/3/library/time.html#time.perf_counter</span></span><br><span class="line"><span class="comment">#Hard Vote or majority rules w/Tuned Hyperparameters</span></span><br><span class="line">grid_hard = ensemble.VotingClassifier(estimators = vote_est , voting = <span class="string">&#x27;hard&#x27;</span>)</span><br><span class="line">grid_hard_cv = model_selection.cross_validate(grid_hard, data1[Input_col], data1[Target], cv  = cv_split, return_train_score = <span class="literal">True</span>, n_jobs=<span class="number">4</span>)</span><br><span class="line">grid_hard.fit(data1[Input_col], data1[Target])</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Hard Voting w/Tuned Hyperparameters Training w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(grid_hard_cv[<span class="string">&#x27;train_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Hard Voting w/Tuned Hyperparameters Test w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(grid_hard_cv[<span class="string">&#x27;test_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Hard Voting w/Tuned Hyperparameters Test w/bin score 3*std: +/- &#123;:.2f&#125;&quot;</span>. format(grid_hard_cv[<span class="string">&#x27;test_score&#x27;</span>].std()*<span class="number">100</span>*<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">10</span>)</span><br><span class="line"></span><br><span class="line"><span class="comment">#Soft Vote or weighted probabilities w/Tuned Hyperparameters</span></span><br><span class="line">grid_soft = ensemble.VotingClassifier(estimators = vote_est , voting = <span class="string">&#x27;soft&#x27;</span>)</span><br><span class="line">grid_soft_cv = model_selection.cross_validate(grid_soft, data1[Input_col], data1[Target], cv  = cv_split, return_train_score = <span class="literal">True</span>, n_jobs=<span class="number">4</span>)</span><br><span class="line">grid_soft.fit(data1[Input_col], data1[Target])</span><br><span class="line"></span><br><span class="line">print(<span class="string">&quot;Soft Voting w/Tuned Hyperparameters Training w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(grid_soft_cv[<span class="string">&#x27;train_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Soft Voting w/Tuned Hyperparameters Test w/bin score mean: &#123;:.2f&#125;&quot;</span>. format(grid_soft_cv[<span class="string">&#x27;test_score&#x27;</span>].mean()*<span class="number">100</span>))</span><br><span class="line">print(<span class="string">&quot;Soft Voting w/Tuned Hyperparameters Test w/bin score 3*std: +/- &#123;:.2f&#125;&quot;</span>. format(grid_soft_cv[<span class="string">&#x27;test_score&#x27;</span>].std()*<span class="number">100</span>*<span class="number">3</span>))</span><br><span class="line">print(<span class="string">&#x27;-&#x27;</span>*<span class="number">10</span>)</span><br><span class="line">run_total = time.perf_counter() - start_total</span><br><span class="line">print(<span class="string">&#x27;Total optimization time was &#123;:.2f&#125; minutes.&#x27;</span>.format(run_total/<span class="number">60</span>))</span><br></pre></td></tr></table></figure>
+
+<pre><code>Hard Voting w/Tuned Hyperparameters Training w/bin score mean: 90.64
+Hard Voting w/Tuned Hyperparameters Test w/bin score mean: 83.21
+Hard Voting w/Tuned Hyperparameters Test w/bin score 3*std: +/- 5.84
+----------
+Soft Voting w/Tuned Hyperparameters Training w/bin score mean: 90.43
+Soft Voting w/Tuned Hyperparameters Test w/bin score mean: 82.61
+Soft Voting w/Tuned Hyperparameters Test w/bin score 3*std: +/- 6.22
+----------
+Total optimization time was 0.63 minutes.</code></pre>
+<h1 id="최종-모형"><a href="#최종-모형" class="headerlink" title="최종 모형"></a>최종 모형</h1><ol>
+<li>최적 파라미터 반영 개별 모델</li>
+<li>최적 파라미터 반영 Voting 모델</li>
+</ol>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">Target = [<span class="string">&#x27;Survived&#x27;</span>]</span><br><span class="line">Input_col = [<span class="string">&#x27;Pclass&#x27;</span>, <span class="string">&#x27;Sex&#x27;</span>, <span class="string">&#x27;Age&#x27;</span>, <span class="string">&#x27;SibSp&#x27;</span>, <span class="string">&#x27;Parch&#x27;</span>, <span class="string">&#x27;Fare&#x27;</span>, <span class="string">&#x27;Cabin&#x27;</span>, <span class="string">&#x27;S&#x27;</span>, <span class="string">&#x27;C&#x27;</span>, <span class="string">&#x27;Q&#x27;</span>, <span class="number">0</span>, <span class="number">1</span>, <span class="number">2</span>, <span class="number">3</span>, <span class="number">4</span>, <span class="string">&#x27;familySize&#x27;</span>, <span class="string">&#x27;FareBin&#x27;</span>, <span class="string">&#x27;AgeBin&#x27;</span>, <span class="string">&#x27;isAlone&#x27;</span>]</span><br><span class="line"></span><br><span class="line">MLA_predict_sub = gender_submission</span><br><span class="line"></span><br><span class="line"><span class="keyword">for</span> algs <span class="keyword">in</span> vote_est:</span><br><span class="line">    alg = algs[<span class="number">1</span>]    </span><br><span class="line">    MLA_name = alg.__class__.__name__</span><br><span class="line"></span><br><span class="line">    alg.fit(train[Input_col], train[Target])</span><br><span class="line">    MLA_predict_sub[MLA_name] = alg.predict(test[Input_col])</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">MLA_predict_sub[<span class="string">&#x27;vote hard&#x27;</span>] = grid_hard.predict(test[Input_col])</span><br><span class="line">MLA_predict_sub[<span class="string">&#x27;soft hard&#x27;</span>] = grid_soft.predict(test[Input_col])</span><br></pre></td></tr></table></figure>
+
+
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> col_nm <span class="keyword">in</span> MLA_predict_sub.columns[<span class="number">2</span>:]:</span><br><span class="line">    sub = pd.DataFrame()</span><br><span class="line">    sub[<span class="string">&#x27;PassengerId&#x27;</span>] = MLA_predict_sub[<span class="string">&#x27;PassengerId&#x27;</span>]</span><br><span class="line">    sub[<span class="string">&#x27;Survived&#x27;</span>] = MLA_predict_sub[col_nm]</span><br><span class="line">    sub.to_csv(<span class="string">&#x27;sub_&#x27;</span>+col_nm+<span class="string">&#x27;.csv&#x27;</span>, index=<span class="literal">None</span>)</span><br></pre></td></tr></table></figure>
+
+<h1 id="제출"><a href="#제출" class="headerlink" title="제출"></a>제출</h1><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">pd.DataFrame([[col_nm, np.mean(MLA_predict_sub[<span class="string">&#x27;Survived&#x27;</span>] == MLA_predict_sub[col_nm])] <span class="keyword">for</span> col_nm <span class="keyword">in</span> MLA_predict_sub.columns[<span class="number">2</span>:]]).sort_values(by=<span class="number">1</span>)</span><br></pre></td></tr></table></figure>
+
+
+
+
+<div>
+<style scoped>
+    .dataframe tbody tr th:only-of-type {
+        vertical-align: middle;
+    }
+
+<pre><code>.dataframe tbody tr th &#123;
+    vertical-align: top;
+&#125;
+
+.dataframe thead th &#123;
+    text-align: right;
+&#125;</code></pre>
+<p></style></p>
+<table border="1" class="dataframe">
+  <thead>
+    <tr style="text-align: right;">
+      <th></th>
+      <th>0</th>
+      <th>1</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <th>10</th>
+      <td>KNeighborsClassifier</td>
+      <td>0.650718</td>
+    </tr>
+    <tr>
+      <th>6</th>
+      <td>GaussianProcessClassifier</td>
+      <td>0.660287</td>
+    </tr>
+    <tr>
+      <th>11</th>
+      <td>SVC</td>
+      <td>0.674641</td>
+    </tr>
+    <tr>
+      <th>2</th>
+      <td>BaggingClassifier</td>
+      <td>0.851675</td>
+    </tr>
+    <tr>
+      <th>9</th>
+      <td>GaussianNB</td>
+      <td>0.887560</td>
+    </tr>
+    <tr>
+      <th>5</th>
+      <td>RandomForestClassifier</td>
+      <td>0.894737</td>
+    </tr>
+    <tr>
+      <th>0</th>
+      <td>XGBClassifier</td>
+      <td>0.901914</td>
+    </tr>
+    <tr>
+      <th>4</th>
+      <td>GradientBoostingClassifier</td>
+      <td>0.904306</td>
+    </tr>
+    <tr>
+      <th>13</th>
+      <td>soft hard</td>
+      <td>0.904306</td>
+    </tr>
+    <tr>
+      <th>12</th>
+      <td>vote hard</td>
+      <td>0.911483</td>
+    </tr>
+    <tr>
+      <th>3</th>
+      <td>ExtraTreesClassifier</td>
+      <td>0.918660</td>
+    </tr>
+    <tr>
+      <th>1</th>
+      <td>AdaBoostClassifier</td>
+      <td>0.925837</td>
+    </tr>
+    <tr>
+      <th>7</th>
+      <td>LogisticRegressionCV</td>
+      <td>0.925837</td>
+    </tr>
+    <tr>
+      <th>8</th>
+      <td>BernoulliNB</td>
+      <td>0.944976</td>
+    </tr>
+  </tbody>
+</table>
+</div>
+
+<h3 id="Reference"><a href="#Reference" class="headerlink" title="Reference"></a>Reference</h3><p><a target="_blank" rel="noopener" href="https://www.kaggle.com/startupsci/titanic-data-science-solutions">https://www.kaggle.com/startupsci/titanic-data-science-solutions</a></p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Titanic</p><p><a href="http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/">http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Kim Jooyoung</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-10-07</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-10</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/ML/">ML</a><a class="link-muted mr-2" rel="tag" href="/tags/scikit-learn/">scikit-learn</a></div><div class="sharethis-inline-share-buttons"></div><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5f7d1d32c00253001286bb86&amp;product=inline-share-buttons" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/10/07/ml/newsgroup/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">newsgroup</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/10/07/hexo/hexo1/"><span class="level-item">Hexo를 이용하여 git 블로그 만들기1</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://k-joo0.github.io/2020/10/07/ml/Titanic/Titanic/';
+            this.page.identifier = '2020/10/07/ml/Titanic/Titanic/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'joo0' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar_white_joo0.jpg" alt="Kim Jooyoung"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Kim Jooyoung</p><p class="is-size-6 is-block">Data scientist</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Seoul, Korea</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">4</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">2</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">4</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/k-joo0" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/k-joo0"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="links"><div class="card-content"><div class="menu"><h3 class="menu-label">Links</h3><ul class="menu-list"><li><a class="level is-mobile" href="https://hexo.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Hexo</span></span><span class="level-right"><span class="level-item tag">hexo.io</span></span></a></li><li><a class="level is-mobile" href="https://bulma.io" target="_blank" rel="noopener"><span class="level-left"><span class="level-item">Bulma</span></span><span class="level-right"><span class="level-item tag">bulma.io</span></span></a></li></ul></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Hexo/"><span class="level-start"><span class="level-item">Hexo</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/ML/"><span class="level-start"><span class="level-item">ML</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2020/10/"><span class="level-start"><span class="level-item">October 2020</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Hexo/"><span class="tag">Hexo</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/ML/"><span class="tag">ML</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/icarus/"><span class="tag">icarus</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/scikit-learn/"><span class="tag">scikit-learn</span><span class="tag">2</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">Subscribe for updates</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><ul class="menu-list"><ul class="menu-list"><li><a class="level is-mobile" href="#Workflow-stages"><span class="level-left"><span class="level-item">1.1.1</span><span class="level-item">Workflow stages</span></span></a></li><li><a class="level is-mobile" href="#Workflow-goals"><span class="level-left"><span class="level-item">1.1.2</span><span class="level-item">Workflow goals</span></span></a></li><li><a class="level is-mobile" href="#문제정의"><span class="level-left"><span class="level-item">1.1.3</span><span class="level-item">문제정의</span></span></a></li><li><a class="level is-mobile" href="#데이터-확인"><span class="level-left"><span class="level-item">1.1.4</span><span class="level-item">데이터 확인</span></span></a></li><li><a class="level is-mobile" href="#데이터-결측치-확인"><span class="level-left"><span class="level-item">1.1.5</span><span class="level-item">데이터 결측치 확인</span></span></a></li><li><a class="level is-mobile" href="#최종-데이터"><span class="level-left"><span class="level-item">1.1.6</span><span class="level-item">최종 데이터</span></span></a></li><li><a class="level is-mobile" href="#테스트5-파라미터-최적화-후-Voting-분류-알고리즘"><span class="level-left"><span class="level-item">1.1.7</span><span class="level-item">테스트5: 파라미터 최적화 후 Voting 분류 알고리즘</span></span></a></li></ul></ul><li><a class="level is-mobile" href="#최종-모형"><span class="level-left"><span class="level-item">2</span><span class="level-item">최종 모형</span></span></a></li><li><a class="level is-mobile" href="#제출"><span class="level-left"><span class="level-item">3</span><span class="level-item">제출</span></span></a><ul class="menu-list"><ul class="menu-list"><li><a class="level is-mobile" href="#Reference"><span class="level-left"><span class="level-item">3.1.1</span><span class="level-item">Reference</span></span></a></li></ul></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T05:00:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/ml/newsgroup/">newsgroup</a></p><p class="categories"><a href="/categories/ML/">ML</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T05:00:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/ml/Titanic/Titanic/">Titanic</a></p><p class="categories"><a href="/categories/ML/">ML</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T04:10:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/hexo/hexo1/">Hexo를 이용하여 git 블로그 만들기1</a></p><p class="categories"><a href="/categories/Hexo/">Hexo</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T04:10:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/hexo/hexo2/">Hexo를 이용하여 git 블로그 만들기2</a></p><p class="categories"><a href="/categories/Hexo/">Hexo</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Joo0" height="28"></a><p class="is-size-7"><span>&copy; 2020 Kim Jooyoung</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><style>.searchbox .searchbox-body { background: white; }</style><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"><gcse:searchresults-only></gcse:searchresults-only></div></div><script>(function() {
+            var cx = '612d136cd10b0048e';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();</script></div><script src="/js/google_cse.js"></script></body></html>
