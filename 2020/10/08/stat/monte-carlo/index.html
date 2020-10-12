@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"><meta><title>Monte Carlo Integration and Variance Reduction - Joo0</title><link rel="manifest" href="/manifest.json"><meta name="application-name" content="Joo0"><meta name="msapplication-TileImage" content="/img/fav_joo0.jpg"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="Joo0"><meta name="apple-mobile-web-app-status-bar-style" content="default"><meta description="Monte carlo 적분과 분산 축소(efficiency)"><meta property="og:type" content="blog"><meta property="og:title" content="Monte Carlo Integration and Variance Reduction"><meta property="og:url" content="http://k-joo0.github.io/2020/10/08/stat/monte-carlo/"><meta property="og:site_name" content="Joo0"><meta property="og:description" content="Monte carlo 적분과 분산 축소(efficiency)"><meta property="og:locale" content="en_US"><meta property="og:image" content="http://k-joo0.github.io/img/og_image.png"><meta property="article:published_time" content="2020-10-08T04:10:00.000Z"><meta property="article:modified_time" content="2020-10-12T13:38:37.085Z"><meta property="article:author" content="Kim Jooyoung"><meta property="article:tag" content="Monte carlo"><meta property="article:tag" content="Variable reduction"><meta property="twitter:card" content="summary"><meta property="twitter:image" content="/img/og_image.png"><script type="application/ld+json">{"@context":"https://schema.org","@type":"BlogPosting","mainEntityOfPage":{"@type":"WebPage","@id":"http://k-joo0.github.io/2020/10/08/stat/monte-carlo/"},"headline":"Joo0","image":["http://k-joo0.github.io/img/og_image.png"],"datePublished":"2020-10-08T04:10:00.000Z","dateModified":"2020-10-12T13:38:37.085Z","author":{"@type":"Person","name":"Kim Jooyoung"},"description":"Monte carlo 적분과 분산 축소(efficiency)"}</script><link rel="canonical" href="http://k-joo0.github.io/2020/10/08/stat/monte-carlo/"><link rel="icon" href="/img/fav_joo0.jpg"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@9.12.0/styles/atom-one-light.css"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Ubuntu:wght@400;600&amp;family=Source+Code+Pro"><link rel="stylesheet" href="/css/default.css"><style>body>.footer,body>.navbar,body>.section{opacity:0}</style><!--!--><!--!--><!--!--><!--!--><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/css/lightgallery.min.css"><link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/css/justifiedGallery.min.css"><script src="https://www.googletagmanager.com/gtag/js?id=UA-179938175-1" async></script><script>window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+    
+        gtag('config', 'UA-179938175-1');</script><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/pace-js@1.0.2/pace.min.js"></script><!--!--><!--!--><meta name="generator" content="Hexo 5.2.0"></head><body class="is-3-column"><nav class="navbar navbar-main"><div class="container"><div class="navbar-brand justify-content-center"><a class="navbar-item navbar-logo" href="/"><img src="/img/logo.svg" alt="Joo0" height="28"></a></div><div class="navbar-menu"><div class="navbar-start"><a class="navbar-item" href="/">Home</a><a class="navbar-item" href="/archives">Archives</a><a class="navbar-item" href="/categories">Categories</a><a class="navbar-item" href="/tags">Tags</a><a class="navbar-item" href="/about">About</a></div><div class="navbar-end"><a class="navbar-item" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a><a class="navbar-item is-hidden-tablet catalogue" title="Catalogue" href="javascript:;"><i class="fas fa-list-ul"></i></a><a class="navbar-item search" title="Search" href="javascript:;"><i class="fas fa-search"></i></a></div></div></div></nav><section class="section"><div class="container"><div class="columns"><div class="column order-2 column-main is-8-tablet is-8-desktop is-6-widescreen"><div class="card"><article class="card-content article" role="article"><div class="article-meta is-size-7 is-uppercase level is-mobile"><div class="level-left"><span class="level-item">Posted&nbsp;<time dateTime="2020-10-08T04:10:00.000Z" title="2020-10-08T04:10:00.000Z">2020-10-08</time></span><span class="level-item">Updated&nbsp;<time dateTime="2020-10-12T13:38:37.085Z" title="2020-10-12T13:38:37.085Z">2020-10-12</time></span><span class="level-item"><a class="link-muted" href="/categories/Stats/">Stats</a></span><span class="level-item">7 minutes read (About 1064 words)</span></div></div><h1 class="title is-3 is-size-4-mobile">Monte Carlo Integration and Variance Reduction</h1><div class="content"><p>Monte carlo 적분과 분산 축소(efficiency)</p>
+<a id="more"></a>
+<h3 id="몬테-카를로-방법-Monte-Carlo-Methods"><a href="#몬테-카를로-방법-Monte-Carlo-Methods" class="headerlink" title="몬테 카를로 방법(Monte Carlo Methods)"></a><strong>몬테 카를로 방법(Monte Carlo Methods)</strong></h3><hr>
+<h4 id="정의-from-나무위키"><a href="#정의-from-나무위키" class="headerlink" title="정의(from 나무위키)"></a>정의(from 나무위키)</h4><p>동명의 카지노에서 따온 이름을 가진, 무작위 추출된 난수를 이용하여 함수의 값을 계산하는 <a target="_blank" rel="noopener" href="https://namu.wiki/w/%ED%86%B5%EA%B3%84%ED%95%99">통계학</a>의 방법. <a target="_blank" rel="noopener" href="https://namu.wiki/w/%EC%B5%9C%EC%A0%81%ED%99%94">최적화</a>, <a target="_blank" rel="noopener" href="https://namu.wiki/w/%EC%88%98%EC%B9%98%EC%A0%81%EB%B6%84">수치적분</a>, <a target="_blank" rel="noopener" href="https://namu.wiki/w/%ED%99%95%EB%A5%A0%EB%B6%84%ED%8F%AC">확률분포</a>로부터의 추출 등에 쓰인다.</p>
+<p><a target="_blank" rel="noopener" href="https://namu.wiki/w/%EB%AA%AC%ED%85%8C%20%EC%B9%B4%EB%A5%BC%EB%A1%9C%20%EB%B0%A9%EB%B2%95"></a></p>
+<h4 id="의미"><a href="#의미" class="headerlink" title="의미"></a>의미</h4><p>난수 생성을 통해서 주어진 계산을 하면 모두 몬테 카를로 방법이라고 말할 수 있다.</p>
+<p>난수를 무한히 생성할 수 있다면, 난수를 통해 계산된 값은 실제 모수에 수렴한다고 할 수 있다(by SLLN)</p>
+<h3 id="Monte-Carlo-Integration-with-Sampling"><a href="#Monte-Carlo-Integration-with-Sampling" class="headerlink" title="Monte Carlo Integration with Sampling"></a>Monte Carlo Integration with Sampling</h3><hr>
+<h4 id="적분-방법"><a href="#적분-방법" class="headerlink" title="적분 방법"></a>적분 방법</h4><p>어떤 주어진 함수 g(x)에 대해 적분값은</p>
+<ul>
+<li>Analytical solution: 수식을 통해 직접 계산 가능한 방법. 사용할 수 있다면 정확한 결과를 도출.</li>
+<li>Numerical solution: 수식을 사용할 수 없는 경우, 근사를 통해 결과를 도출.</li>
+</ul>
+<p>으로 계산 가능함</p>
+<h4 id="Sample-mean-Monte-Carlo-method"><a href="#Sample-mean-Monte-Carlo-method" class="headerlink" title="Sample mean Monte Carlo method"></a>Sample mean Monte Carlo method</h4><p>다음과 같이 주어진 함수 g(x)를 주어진 구간 (a, b)에서 적분한 결과를 θ라고 한다면,</p>
+<p>$$\theta = \int_{a}^{b} g(x)dx \dots \text{ (1)}$$</p>
+<p>라고 풀 수 있다.</p>
+<p>여기서,</p>
+<p>$$g(x) = 5x^4 + 3x^2$$</p>
+<p>와 같이 계산하기 쉬운 값이면, 직접 계산을 통한 analytical solution을 얻을 수 있다.</p>
+<p>하지만 g(x)가,</p>
+<p>$$g(x) = \frac{e^x}{1-x^2}$$</p>
+<p>와 같은 형태라면 analytical solution을 얻기 쉽지 않다.</p>
+<p>만약 θ를 우리가 알고있고 계산할 수 있는 f(x) 의 형태로 표현한다면,</p>
+<p>$$\theta = \int_{a}^{b} g(x)dx  = \int_{a}^{b} \frac{g(x)}{f(x)}f(x)dx  = E_f[g(x)] \dots \text{ (2)}$$</p>
+<p>로 표현할 수 있다.</p>
+<p>수식 (1)과 (2)의 큰 차이는,</p>
+<ul>
+<li>(1)에서의 x는 문자 그대로 <strong>변수</strong></li>
+<li>(2)에서의 x는 함수 f(x)를 분포로 따르는 <strong>확률변수</strong></li>
+</ul>
+<p>물론 여전히 (2)를 계산하는 것은 쉽지않다.</p>
+<p>하지만, 대수의 법칙(Strong Law of Large Number)를 이용하게 되면, (2)를 평균의 문제로 근사할 수 있게 된다.</p>
+<p>$$\theta = E_f[g(x)] \to \hat \theta = \frac{1}{m} \sum_{i=1}^{m} g(x_i) \text{ as } m \to \infty \text{ by S.L.L.N \dots (3)}$$</p>
+<p>f(x)를 잘 알려진 분포로 가정한다면,</p>
+<p>→ f(x)로 부터 x를 무수히 생성한다</p>
+<p>→ 수식 (3)에 생성한 x를 대입하여 결과를 얻는다.</p>
+<p>→ 얻은 결과는 수식 (1)의 결과에 수렴한다고 할 수 있다.</p>
+<p>→ 수식 (3)을 통해 (1)의 결과값을 계산할 수 있다.</p>
+<h4 id="hit-or-miss"><a href="#hit-or-miss" class="headerlink" title="hit-or-miss"></a>hit-or-miss</h4><hr>
+<p><a target="_blank" rel="noopener" href="http://magnusmetz.github.io/2013/04/hit-or-miss-monte-carlo-integration/">Hit or Miss Monte Carlo Integration</a></p>
+<h3 id="Variance-reduction"><a href="#Variance-reduction" class="headerlink" title="Variance reduction"></a><strong>Variance reduction</strong></h3><hr>
+<h4 id="Variance-of-θ"><a href="#Variance-of-θ" class="headerlink" title="Variance of θ"></a>Variance of θ</h4><p>θ를 구할 수 있는 방법은 위의 sample mean monte carlo와 hit-or-miss 뿐만 아니라 다양한 방법이 존재하기 떄문에, 결과값에 차이가 존재한다. 또한, 사용한 난수의 수에 따라서 결과값에 차이가 생길 수 있다.</p>
+<p>따라서, 우리가 어떤 방법을 통해 θ를 구한다고 한다면, 가장 안정적인 θ값을 계산하는 방법을 사용하는 것이 좋다. 다시 말하면, 분산이 가장 작은 θ 계산 방법을 사용하는 것이 좋다. 혹은 θ의 분산을 줄이는 방향으로 θ를 추정하는 것이 좋은 계산 방법이다.</p>
+<h4 id="Reduction-methods"><a href="#Reduction-methods" class="headerlink" title="Reduction methods"></a>Reduction methods</h4><p><strong>2.1 Antithetic variate</strong></p>
+<ul>
+<li>condition: f(x) &amp; g(x) are negatively correlated</li>
+</ul>
+<p>$$\hat \theta_{\hat c} = \frac{\hat \theta_1 + \hat \theta_2}{2}$$</p>
+<p><strong>2.2 Control variate</strong></p>
+<ul>
+<li>condition: f(x) &amp; g(x) are just correlated</li>
+</ul>
+<p>$$\hat \theta_{\hat c} = g(x) + c(f(x)+ \mu_f)$$</p>
+<p><strong>2.3 Antithetic variate as Control variate</strong></p>
+<ul>
+<li>The antithetic variate estimator of the previous section is actually a special case of the control variate estimator.</li>
+<li>Antithetic variate  = Control variate with  θ1,  θ2 are negatively correlated</li>
+</ul>
+<p><strong>2.4 Importance sampling</strong></p>
+<ul>
+<li>f(x)가 g(x)와 근사 할 수록 분산 축소가 클 것이다.  이 때, f(x)를 importance function으로 부른다.<ul>
+<li>f(x)가 g(x)와 근사할 경우 → Importance sampling</li>
+<li>f(x)가 일반적인 uniform일 경우 → sample mean Monte Carlo(= uniform sampling)</li>
+</ul>
+</li>
+</ul>
+<p><strong>2.5 Stratified sampling</strong></p>
+<ul>
+<li>층화 추출법</li>
+</ul>
+<p>$$Var(\hat \theta_k(m_1,\dots,m_k)) &lt; Var(\hat \theta)$$</p>
+<p>$$m = m_1 +\dots + m_k$$</p>
+</div><div class="article-licensing box"><div class="licensing-title"><p>Monte Carlo Integration and Variance Reduction</p><p><a href="http://k-joo0.github.io/2020/10/08/stat/monte-carlo/">http://k-joo0.github.io/2020/10/08/stat/monte-carlo/</a></p></div><div class="licensing-meta level is-mobile"><div class="level-left"><div class="level-item is-narrow"><div><h6>Author</h6><p>Kim Jooyoung</p></div></div><div class="level-item is-narrow"><div><h6>Posted on</h6><p>2020-10-08</p></div></div><div class="level-item is-narrow"><div><h6>Updated on</h6><p>2020-10-12</p></div></div><div class="level-item is-narrow"><div><h6>Licensed under</h6><p><a class="icon" rel="noopener" target="_blank" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a><a class="icon" rel="noopener" target="_blank" title="Attribution" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a><a class="icon" rel="noopener" target="_blank" title="Noncommercial" href="https://creativecommons.org/licenses/by-nc/4.0/"><i class="fab fa-creative-commons-nc"></i></a></p></div></div></div></div></div><div class="article-tags is-size-7 mb-4"><span class="mr-2">#</span><a class="link-muted mr-2" rel="tag" href="/tags/Monte-carlo/">Monte carlo</a><a class="link-muted mr-2" rel="tag" href="/tags/Variable-reduction/">Variable reduction</a></div><div class="sharethis-inline-share-buttons"></div><script src="https://platform-api.sharethis.com/js/sharethis.js#property=5f7d1d32c00253001286bb86&amp;product=inline-share-buttons" defer></script></article></div><!--!--><nav class="post-navigation mt-4 level is-mobile"><div class="level-start"><a class="article-nav-prev level level-item link-muted" href="/2020/10/09/stat/mcmc/"><i class="level-item fas fa-chevron-left"></i><span class="level-item">Markov Chain Monte Carlo</span></a></div><div class="level-end"><a class="article-nav-next level level-item link-muted" href="/2020/10/07/ml/newsgroup/"><span class="level-item">newsgroup</span><i class="level-item fas fa-chevron-right"></i></a></div></nav><div class="card"><div class="card-content"><h3 class="title is-5">Comments</h3><div id="disqus_thread"><noscript>Please enable JavaScript to view the <a target="_blank" rel="noopener" href="//disqus.com/?ref_noscript">comments powered by Disqus.</a></noscript></div><script>var disqus_config = function () {
+            this.page.url = 'http://k-joo0.github.io/2020/10/08/stat/monte-carlo/';
+            this.page.identifier = '2020/10/08/stat/monte-carlo/';
+        };
+        (function() {
+            var d = document, s = d.createElement('script');  
+            s.src = '//' + 'joo0' + '.disqus.com/embed.js';
+            s.setAttribute('data-timestamp', +new Date());
+            (d.head || d.body).appendChild(s);
+        })();</script></div></div></div><div class="column column-left is-4-tablet is-4-desktop is-3-widescreen  order-1"><div class="card widget" data-type="profile"><div class="card-content"><nav class="level"><div class="level-item has-text-centered flex-shrink-1"><div><figure class="image is-128x128 mx-auto mb-2"><img class="avatar" src="/img/avatar_white_joo0.jpg" alt="Kim Jooyoung"></figure><p class="title is-size-4 is-block" style="line-height:inherit;">Kim Jooyoung</p><p class="is-size-6 is-block">Data scientist</p><p class="is-size-6 is-flex justify-content-center"><i class="fas fa-map-marker-alt mr-1"></i><span>Seoul, Korea</span></p></div></div></nav><nav class="level is-mobile"><div class="level-item has-text-centered is-marginless"><div><p class="heading">Posts</p><a href="/archives"><p class="title">10</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Categories</p><a href="/categories"><p class="title">3</p></a></div></div><div class="level-item has-text-centered is-marginless"><div><p class="heading">Tags</p><a href="/tags"><p class="title">14</p></a></div></div></nav><div class="level"><a class="level-item button is-primary is-rounded" href="https://github.com/k-joo0" target="_blank" rel="noopener">Follow</a></div><div class="level is-mobile"><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="Github" href="https://github.com/k-joo0"><i class="fab fa-github"></i></a><a class="level-item button is-transparent is-marginless" target="_blank" rel="noopener" title="RSS" href="/"><i class="fas fa-rss"></i></a></div></div></div><div class="card widget" data-type="categories"><div class="card-content"><div class="menu"><h3 class="menu-label">Categories</h3><ul class="menu-list"><li><a class="level is-mobile" href="/categories/Hexo/"><span class="level-start"><span class="level-item">Hexo</span></span><span class="level-end"><span class="level-item tag">2</span></span></a></li><li><a class="level is-mobile" href="/categories/ML/"><span class="level-start"><span class="level-item">ML</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li><li><a class="level is-mobile" href="/categories/Stats/"><span class="level-start"><span class="level-item">Stats</span></span><span class="level-end"><span class="level-item tag">4</span></span></a></li></ul></div></div></div><div class="card widget" data-type="archives"><div class="card-content"><div class="menu"><h3 class="menu-label">Archives</h3><ul class="menu-list"><li><a class="level is-mobile" href="/archives/2020/10/"><span class="level-start"><span class="level-item">October 2020</span></span><span class="level-end"><span class="level-item tag">10</span></span></a></li></ul></div></div></div><div class="card widget" data-type="tags"><div class="card-content"><div class="menu"><h3 class="menu-label">Tags</h3><div class="field is-grouped is-grouped-multiline"><div class="control"><a class="tags has-addons" href="/tags/Asymptotical-theory/"><span class="tag">Asymptotical theory</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Delta-method/"><span class="tag">Delta method</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Hexo/"><span class="tag">Hexo</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/ML/"><span class="tag">ML</span><span class="tag">4</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Markov-chain/"><span class="tag">Markov chain</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Model-interpretability/"><span class="tag">Model interpretability</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Monte-carlo/"><span class="tag">Monte carlo</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Random-number-generation/"><span class="tag">Random number generation</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/Variable-reduction/"><span class="tag">Variable reduction</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/XAI/"><span class="tag">XAI</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/icarus/"><span class="tag">icarus</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/sampling/"><span class="tag">sampling</span><span class="tag">1</span></a></div><div class="control"><a class="tags has-addons" href="/tags/scikit-learn/"><span class="tag">scikit-learn</span><span class="tag">2</span></a></div><div class="control"><a class="tags has-addons" href="/tags/semi-supervised-learning/"><span class="tag">semi-supervised learning</span><span class="tag">1</span></a></div></div></div></div></div><div class="card widget" data-type="subscribe-email"><div class="card-content"><div class="menu"><h3 class="menu-label">Subscribe for updates</h3><form action="https://feedburner.google.com/fb/a/mailverify" method="post" target="popupwindow" onsubmit="window.open(&#039;https://feedburner.google.com/fb/a/mailverify?uri=&#039;,&#039;popupwindow&#039;,&#039;scrollbars=yes,width=550,height=520&#039;);return true"><input type="hidden" value="" name="uri"><input type="hidden" name="loc" value="en_US"><div class="field has-addons"><div class="control has-icons-left is-expanded"><input class="input" name="email" type="email" placeholder="Email"><span class="icon is-small is-left"><i class="fas fa-envelope"></i></span></div><div class="control"><input class="button" type="submit" value="Subscribe"></div></div></form></div></div></div><div class="column-right-shadow is-hidden-widescreen is-sticky"></div></div><div class="column column-right is-4-tablet is-4-desktop is-3-widescreen is-hidden-touch is-hidden-desktop-only order-3 is-sticky"><div class="card widget" id="toc" data-type="toc"><div class="card-content"><div class="menu"><h3 class="menu-label">Catalogue</h3><ul class="menu-list"><li><a class="level is-mobile" href="#몬테-카를로-방법-Monte-Carlo-Methods"><span class="level-left"><span class="level-item">1</span><span class="level-item">몬테 카를로 방법(Monte Carlo Methods)</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#정의-from-나무위키"><span class="level-left"><span class="level-item">1.1</span><span class="level-item">정의(from 나무위키)</span></span></a></li><li><a class="level is-mobile" href="#의미"><span class="level-left"><span class="level-item">1.2</span><span class="level-item">의미</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Monte-Carlo-Integration-with-Sampling"><span class="level-left"><span class="level-item">2</span><span class="level-item">Monte Carlo Integration with Sampling</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#적분-방법"><span class="level-left"><span class="level-item">2.1</span><span class="level-item">적분 방법</span></span></a></li><li><a class="level is-mobile" href="#Sample-mean-Monte-Carlo-method"><span class="level-left"><span class="level-item">2.2</span><span class="level-item">Sample mean Monte Carlo method</span></span></a></li><li><a class="level is-mobile" href="#hit-or-miss"><span class="level-left"><span class="level-item">2.3</span><span class="level-item">hit-or-miss</span></span></a></li></ul></li><li><a class="level is-mobile" href="#Variance-reduction"><span class="level-left"><span class="level-item">3</span><span class="level-item">Variance reduction</span></span></a><ul class="menu-list"><li><a class="level is-mobile" href="#Variance-of-θ"><span class="level-left"><span class="level-item">3.1</span><span class="level-item">Variance of θ</span></span></a></li><li><a class="level is-mobile" href="#Reduction-methods"><span class="level-left"><span class="level-item">3.2</span><span class="level-item">Reduction methods</span></span></a></li></ul></li></ul></div></div><style>.menu-list > li > a.is-active + .menu-list { display: block; }.menu-list > li > a + .menu-list { display: none; }</style><script src="/js/toc.js" defer></script></div><div class="card widget" data-type="recent-posts"><div class="card-content"><h3 class="menu-label">Recents</h3><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-09T04:10:00.000Z">2020-10-09</time></p><p class="title"><a href="/2020/10/09/stat/mcmc/">Markov Chain Monte Carlo</a></p><p class="categories"><a href="/categories/Stats/">Stats</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-08T04:10:00.000Z">2020-10-08</time></p><p class="title"><a href="/2020/10/08/stat/monte-carlo/">Monte Carlo Integration and Variance Reduction</a></p><p class="categories"><a href="/categories/Stats/">Stats</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T05:00:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/ml/newsgroup/">newsgroup</a></p><p class="categories"><a href="/categories/ML/">ML</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T05:00:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/ml/Titanic/Titanic/">Titanic</a></p><p class="categories"><a href="/categories/ML/">ML</a></p></div></article><article class="media"><div class="media-content"><p class="date"><time dateTime="2020-10-07T04:10:00.000Z">2020-10-07</time></p><p class="title"><a href="/2020/10/07/ml/Lime/">LIME</a></p><p class="categories"><a href="/categories/ML/">ML</a></p></div></article></div></div></div></div></div></section><footer class="footer"><div class="container"><div class="level"><div class="level-start"><a class="footer-logo is-block mb-2" href="/"><img src="/img/logo.svg" alt="Joo0" height="28"></a><p class="is-size-7"><span>&copy; 2020 Kim Jooyoung</span>  Powered by <a href="https://hexo.io/" target="_blank" rel="noopener">Hexo</a> &amp; <a href="https://github.com/ppoffice/hexo-theme-icarus" target="_blank" rel="noopener">Icarus</a></p></div><div class="level-end"><div class="field has-addons"><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Creative Commons" href="https://creativecommons.org/"><i class="fab fa-creative-commons"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Attribution 4.0 International" href="https://creativecommons.org/licenses/by/4.0/"><i class="fab fa-creative-commons-by"></i></a></p><p class="control"><a class="button is-transparent is-large" target="_blank" rel="noopener" title="Download on GitHub" href="https://github.com/ppoffice/hexo-theme-icarus"><i class="fab fa-github"></i></a></p></div></div></div></div></footer><script src="https://cdn.jsdelivr.net/npm/jquery@3.3.1/dist/jquery.min.js"></script><script src="https://cdn.jsdelivr.net/npm/moment@2.22.2/min/moment-with-locales.min.js"></script><script src="https://cdn.jsdelivr.net/npm/clipboard@2.0.4/dist/clipboard.min.js" async></script><script>moment.locale("en");</script><script>var IcarusThemeSettings = {
+            article: {
+                highlight: {
+                    clipboard: true,
+                    fold: 'unfolded'
+                }
+            }
+        };</script><script src="/js/column.js"></script><script src="/js/animation.js"></script><a id="back-to-top" title="Back to top" href="javascript:;"><i class="fas fa-chevron-up"></i></a><script src="/js/back_to_top.js" defer></script><!--!--><!--!--><!--!--><script src="https://cdn.jsdelivr.net/npm/cookieconsent@3.1.1/build/cookieconsent.min.js" defer></script><script>window.addEventListener("load", () => {
+      window.cookieconsent.initialise({
+        type: "info",
+        theme: "edgeless",
+        static: false,
+        position: "bottom-left",
+        content: {
+          message: "This website uses cookies to improve your experience.",
+          dismiss: "Got it!",
+          allow: "Allow cookies",
+          deny: "Decline",
+          link: "Learn more",
+          policy: "Cookie Policy",
+          href: "https://www.cookiesandyou.com/",
+        },
+        palette: {
+          popup: {
+            background: "#edeff5",
+            text: "#838391"
+          },
+          button: {
+            background: "#4b81e8"
+          },
+        },
+      });
+    });</script><script src="https://cdn.jsdelivr.net/npm/lightgallery@1.6.8/dist/js/lightgallery.min.js" defer></script><script src="https://cdn.jsdelivr.net/npm/justifiedGallery@3.7.0/dist/js/jquery.justifiedGallery.min.js" defer></script><script>window.addEventListener("load", () => {
+            if (typeof $.fn.lightGallery === 'function') {
+                $('.article').lightGallery({ selector: '.gallery-item' });
+            }
+            if (typeof $.fn.justifiedGallery === 'function') {
+                if ($('.justified-gallery > p > .gallery-item').length) {
+                    $('.justified-gallery > p > .gallery-item').unwrap();
+                }
+                $('.justified-gallery').justifiedGallery();
+            }
+        });</script><!--!--><!--!--><script type="text/x-mathjax-config">MathJax.Hub.Config({
+            'HTML-CSS': {
+                matchFontHeight: false
+            },
+            SVG: {
+                matchFontHeight: false
+            },
+            CommonHTML: {
+                matchFontHeight: false
+            },
+            tex2jax: {
+                inlineMath: [
+                    ['$','$'],
+                    ['\\(','\\)']
+                ]
+            }
+        });</script><script src="https://cdn.jsdelivr.net/npm/mathjax@2.7.5/unpacked/MathJax.js?config=TeX-MML-AM_CHTML" defer></script><!--!--><!--!--><!--!--><script src="/js/main.js" defer></script><style>.searchbox .searchbox-body { background: white; }</style><div class="searchbox"><div class="searchbox-container"><div class="searchbox-header"><div class="searchbox-input-container"><input class="searchbox-input" type="text" placeholder="Type something..."></div><a class="searchbox-close" href="javascript:;">×</a></div><div class="searchbox-body"><gcse:searchresults-only></gcse:searchresults-only></div></div><script>(function() {
+            var cx = '612d136cd10b0048e';
+            var gcse = document.createElement('script');
+            gcse.type = 'text/javascript';
+            gcse.async = true;
+            gcse.src = 'https://cse.google.com/cse.js?cx=' + cx;
+            var s = document.getElementsByTagName('script')[0];
+            s.parentNode.insertBefore(gcse, s);
+        })();</script></div><script src="/js/google_cse.js"></script></body></html>
